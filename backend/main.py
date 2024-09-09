@@ -17,12 +17,15 @@ class SupplyChainData(BaseModel):
     current_inventory: float
     supplier_reliability: float
 
+from pydantic import BaseModel, Field
+
 class OptimizationResult(BaseModel):
-    forecast: List[float]
-    reorder_point: float
-    economic_order_quantity: float
-    supplier_risk: float
-    recommendations: List[str]
+    forecast: List[float] = Field(...)
+    reorder_point: float = Field(...)
+    economic_order_quantity: float = Field(...)
+    supplier_risk: float = Field(...)
+    recommendations: List[str] = Field(default_factory=list)
+    current_inventory: float = Field(...)
 
 @app.post("/optimize_supply_chain", response_model=OptimizationResult)
 async def optimize_supply_chain(data: SupplyChainData):
@@ -40,7 +43,8 @@ async def optimize_supply_chain(data: SupplyChainData):
         reorder_point=reorder_point,
         economic_order_quantity=eoq,
         supplier_risk=supplier_risk,
-        recommendations=[]
+        recommendations=[],
+        current_inventory=data.current_inventory
     )
 
     recommendations = recommendation_generator.generate(optimization_result)
