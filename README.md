@@ -84,10 +84,10 @@ Follow these steps to set up and run the ResearchAgents project:
 
    ```bash 
       # Run Payment Gateway FAST API
-      python  vendor_payment_gateway.py
+      python -m backend.main
       
       # Run Payment Gateway FAST API
-      streamlit run payment_processing_workflow.py
+      streamlit run frontend\streamlit_app.py
       
    ```
 

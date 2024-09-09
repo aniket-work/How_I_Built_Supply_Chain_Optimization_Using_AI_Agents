@@ -1,5 +1,7 @@
 streamlit
+plotly
 groq
+scikit-learn
 langchain
 langchain-community
 langchain-core
