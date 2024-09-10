@@ -3,20 +3,24 @@ How I Built Supply Chain Optimization Using AI Agents
 
 ## Introduction
 
-Full Article : [https://medium.com/@learn-simplified/how-about-an-ai-agent-that-builds-complete-software-projects-all-local-8ddda106011c
+Full Article : [https://medium.com/@learn-simplified/how-i-built-supply-chain-optimization-using-ai-agents-84339654938c
 
-Have you ever wondered how big companies keep their shelves stocked just right, not too much, not too little? Well, I did, and that curiosity led me down a fascinating path. I'm about to tell you how I built a supply chain optimization system using AI agents. It's like teaching a computer to be the world's best stock manager, but for an entire company's inventory!
+“From Data to Decisions” emphasizes the practical transformation of raw data into actionable insights, which is at the core of the system we’ve built.
+
+Have you ever wondered how big companies keep their shelves stocked just right, not too much, not too little? Well, I did, and that curiosity led me down a fascinating path. I’m about to tell you how I built a supply chain optimization system using AI agents. It’s like teaching a computer to be the world’s best stock manager, but for an entire company’s inventory!
 
 
 ## Whats This Project About
 
-This article is a deep dive into how I created a smart system to help businesses manage their supply chains better. I'll walk you through the process of building AI agents that can forecast demand, optimize inventory levels, analyze supplier risks, and even generate recommendations.
-Imagine a crystal ball that not only predicts how much of a product you'll need next month but also tells you when to order more and how muchthat's essentially what this system does. We'll look at the code behind these AI agents and how they work together to create a powerful tool for businesses.
+This article is your roadmap to creating a cutting-edge supply chain optimization system using AI agents. We’ll walk you through the process of building a system that leverages large language models (LLMs) to perform critical supply chain tasks. You’ll learn how to create AI agents for demand forecasting, inventory optimization, supplier risk analysis, and generating actionable recommendations.
+
+We’ll explore the code behind each of these agents, showing you how to structure your system for maximum flexibility and efficiency. Along the way, we’ll also cover important aspects like error handling, data parsing, and creating user-friendly interfaces to interact with your AI-powered system.
 
 ## Why Work on It?
 
-In today's fast-paced business world, AI isn't just a buzzwordit's becoming a necessity. This article shows you, through the lens of a fictional company called OptChain Solutions, how AI can be implemented to solve real-world supply chain problems.
-Whether you're a business owner looking to streamline operations, a developer interested in AI applications, or just someone curious about how modern businesses run, this article has something for you. You'll get a behind-the-scenes look at how AI can crunch numbers, predict trends, and offer insights that can save companies millions. It's a peek into the future of business operations, and trust me, it's pretty exciting!
+In today’s fast-paced business environment, AI isn’t just an advantage — it’s becoming a necessity. Companies that harness AI for supply chain management are seeing dramatic improvements in efficiency, cost reduction, and customer satisfaction. This article shows you, through the lens of a fictional company, how to implement these AI solutions in your own business.
+
+You’ll gain insights into how AI can predict demand trends, optimize inventory levels to reduce costs, assess supplier risks to prevent disruptions, and generate smart recommendations for your supply chain strategy. By understanding and implementing these techniques, you’ll be positioning your company at the forefront of supply chain innovation, ready to tackle the challenges of modern business with AI as your ally.
 
 
 ## Architecture

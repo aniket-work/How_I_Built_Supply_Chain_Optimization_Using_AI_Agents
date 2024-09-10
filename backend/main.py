@@ -41,15 +41,6 @@ class SupplyChainData(BaseModel):
     current_inventory: float
     supplier_reliability: float
 
-
-class SupplyChainResponse(BaseModel):
-    forecast: List[ForecastItem]
-    reorder_point: float
-    economic_order_quantity: float
-    supplier_risk: float
-    recommendations: List[str]
-    current_inventory: float
-
 # Workflow State Definition
 class SupplyChainState(TypedDict):
     date: str
