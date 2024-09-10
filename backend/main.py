@@ -1,56 +1,129 @@
-from fastapi import FastAPI
+import os
+from dotenv import load_dotenv
+from langgraph.graph import StateGraph, END
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict, TypedDict
 import uvicorn
+from loguru import logger
 
-from .agent.demand_forecaster import DemandForecaster
-from .agent.inventory_optimizer import InventoryOptimizer
-from .agent.supplier_risk_analyzer import SupplierRiskAnalyzer
-from .agent.recommendation_generator import RecommendationGenerator
+# Importing nodes (AI agent nodes as separate files)
+from .agent.demand_forecaster import demand_forecaster_node
+from .agent.inventory_optimizer import inventory_optimizer_node
+from .agent.supplier_risk_analyzer import supplier_risk_analyzer_node
+from .agent.recommendation_generator import recommendation_generator_node
 
+load_dotenv()
+
+# Define the FastAPI app
 app = FastAPI()
 
+
+class ForecastItem(BaseModel):
+    date: int
+    demand: float
+
 class SupplyChainData(BaseModel):
+    date: str
+    product_id: int
+    historical_demand: list[float]
+    current_inventory: float
+    supplier_reliability: float
+
+class OptimizationResult(BaseModel):
+    forecast: list[float]
+    reorder_point: float
+    economic_order_quantity: float
+    supplier_risk: float
+    recommendations: list[str]
+    current_inventory: float
+
+class SupplyChainResponse(BaseModel):
+    forecast: List[ForecastItem]
+    reorder_point: float
+    economic_order_quantity: float
+    supplier_risk: float
+    recommendations: List[str]
+    current_inventory: float
+
+# Workflow State Definition
+class SupplyChainState(TypedDict):
     date: str
     product_id: str
     historical_demand: List[float]
     current_inventory: float
     supplier_reliability: float
+    forecast: List[float]
+    reorder_point: float
+    economic_order_quantity: float
+    supplier_risk: float
+    recommendations: List[str]
 
-from pydantic import BaseModel, Field
+# Setup LangGraph Workflow with the AI agent nodes
+workflow = StateGraph(SupplyChainState)
 
-class OptimizationResult(BaseModel):
-    forecast: List[float] = Field(...)
-    reorder_point: float = Field(...)
-    economic_order_quantity: float = Field(...)
-    supplier_risk: float = Field(...)
-    recommendations: List[str] = Field(default_factory=list)
-    current_inventory: float = Field(...)
+# Add each node to the workflow
+workflow.add_node("demand_forecaster", demand_forecaster_node)
+workflow.add_node("inventory_optimizer", inventory_optimizer_node)
+workflow.add_node("supplier_risk_analyzer", supplier_risk_analyzer_node)
+workflow.add_node("recommendation_generator", recommendation_generator_node)
+
+# Define the entry point of the workflow
+workflow.set_entry_point("demand_forecaster")
+
+# Define the flow between nodes
+workflow.add_edge("demand_forecaster", "inventory_optimizer")
+workflow.add_edge("inventory_optimizer", "supplier_risk_analyzer")
+workflow.add_edge("supplier_risk_analyzer", "recommendation_generator")
+workflow.add_edge("recommendation_generator", END)
+
+# Compile the workflow
+compiled_app = workflow.compile()
+
+# API Endpoint to optimize the supply chain using FastAPI
+
 
 @app.post("/optimize_supply_chain", response_model=OptimizationResult)
 async def optimize_supply_chain(data: SupplyChainData):
-    demand_forecaster = DemandForecaster()
-    inventory_optimizer = InventoryOptimizer()
-    risk_analyzer = SupplierRiskAnalyzer()
-    recommendation_generator = RecommendationGenerator()
+    try:
+        # Initialize the state with the provided data
+        state = {
+            "date": data.date,
+            "product_id": data.product_id,
+            "historical_demand": data.historical_demand,
+            "current_inventory": data.current_inventory,
+            "supplier_reliability": data.supplier_reliability,
+            "forecast": [],
+            "reorder_point": 0.0,
+            "economic_order_quantity": 0.0,
+            "supplier_risk": 0.0,
+            "recommendations": []
+        }
 
-    forecast = demand_forecaster.forecast(data.historical_demand)
-    reorder_point, eoq = inventory_optimizer.optimize(data.historical_demand, data.current_inventory)
-    supplier_risk = risk_analyzer.analyze(data.supplier_reliability)
+        # Run the workflow
+        for s in compiled_app.stream(state):
+            logger.info(f"Step completed: {list(s.keys())[0]}")
+            logger.info(f"Current state: {s}")
 
-    optimization_result = OptimizationResult(
-        forecast=forecast,
-        reorder_point=reorder_point,
-        economic_order_quantity=eoq,
-        supplier_risk=supplier_risk,
-        recommendations=[],
-        current_inventory=data.current_inventory
-    )
+        # Extract the final state after the workflow finishes
+        final_state = s[list(s.keys())[0]]  # Get the value of the last key
+        logger.info(f"Final state after workflow: {final_state}")
 
-    recommendations = recommendation_generator.generate(optimization_result)
-    optimization_result.recommendations = recommendations
+        # Ensure that the final state has the required fields before returning
+        result = OptimizationResult(
+            forecast=[ForecastItem(date=i, demand=d) for i, d in enumerate(final_state.get('forecast', []))],
+            reorder_point=final_state.get('reorder_point', 0.0),
+            economic_order_quantity=final_state.get('economic_order_quantity', 0.0),
+            supplier_risk=final_state.get('supplier_risk', 0.0),
+            recommendations=final_state.get('recommendations', []),
+            current_inventory=final_state.get('current_inventory', 0.0)
+        )
 
-    return optimization_result
+        return result
+    except Exception as e:
+        logger.error(f"Error in optimization: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
+# Run the FastAPI app with Uvicorn
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

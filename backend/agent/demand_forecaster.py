@@ -1,15 +1,29 @@
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 
+from backend.agent.llm_service import LLMService
+from loguru import logger
+# Initialize the LLM Service
+llm_service = LLMService()
 
-class DemandForecaster:
-    def forecast(self, historical_demand):
-        # Simple forecasting using RandomForestRegressor
-        X = np.array(range(len(historical_demand))).reshape(-1, 1)
-        y = np.array(historical_demand)
-        model = RandomForestRegressor(n_estimators=100, random_state=42)
-        model.fit(X, y)
+# Define the agents as nodes that interact with the LLM
 
-        future_X = np.array(range(len(historical_demand), len(historical_demand) + 30)).reshape(-1, 1)
-        forecast = model.predict(future_X)
-        return forecast.tolist()
+def demand_forecaster_node(state: dict) -> dict:
+    prompt_template = """
+    system
+    You are an AI model for forecasting demand based on historical data. Given historical demand data, generate forecasts for the next 30 days. Return the forecasts as a JSON object with a key 'forecast' containing a list of floats. Do not include any explanation or code, just the JSON object.
+    user
+    Historical Demand: {historical_demand}
+    assistant
+    """
+
+    response = llm_service.generate_response(prompt_template, {
+        "historical_demand": state['historical_demand']
+    })
+
+    forecast = response.get('forecast', [])
+    logger.info(f"Forecast generated: {forecast}")
+    state['forecast'] = forecast
+    return state
+
+

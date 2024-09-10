@@ -5,38 +5,25 @@ How I Built Supply Chain Optimization Using AI Agents
 
 Full Article : [https://medium.com/@learn-simplified/how-about-an-ai-agent-that-builds-complete-software-projects-all-local-8ddda106011c
 
-Imagine a world where your company's payment processing department runs like a well-oiled machine, handling vendor payments with the precision of a Swiss watch and the intelligence of a seasoned financial expert. Sound like a dream? Well, wake up and smell the AI-infused coffee, because that future is here, and it's ready to transform your business operations! Its called "AI Agents"
+Have you ever wondered how big companies keep their shelves stocked just right, not too much, not too little? Well, I did, and that curiosity led me down a fascinating path. I'm about to tell you how I built a supply chain optimization system using AI agents. It's like teaching a computer to be the world's best stock manager, but for an entire company's inventory!
 
 
 ## Whats This Project About
 
-This article takes you on a journey through the creation of an AI-Agent payment processing system. We're not just talking about a fancy calculator here - we're diving into a fully-fledged workflow that uses artificial intelligence to make decisions, generate reports, and handle payments with minimal human intervention.
-Here's what we cover:
- - Setting up a workflow using LangGraph, a powerful tool for creating AI-driven processes
- - Implementing AI agents for various tasks like selecting vendors, summarizing services, and assessing payments
- - Using language models (specifically, Groq's LLMs) to generate human-like responses and make informed decisions
- - Creating a user-friendly interface with Streamlit for easy interaction with the AI system
- - Handling the nitty-gritty of sending payments securely using FastAPI
-
-We'll walk you through each step, from the initial setup to the final implementation, showing you how these cutting-edge technologies can work together to create a robust, intelligent payment processing system.
+This article is a deep dive into how I created a smart system to help businesses manage their supply chains better. I'll walk you through the process of building AI agents that can forecast demand, optimize inventory levels, analyze supplier risks, and even generate recommendations.
+Imagine a crystal ball that not only predicts how much of a product you'll need next month but also tells you when to order more and how muchthat's essentially what this system does. We'll look at the code behind these AI agents and how they work together to create a powerful tool for businesses.
 
 ## Why Work on It?
 
-In today's fast-paced business world, staying ahead of the curve isn't just an advantage - it's a necessity. AI is no longer a futuristic concept; it's a present-day tool that's reshaping how businesses operate. This article shows you, through a practical example, how to harness the power of AI in your day-to-day operations.
-By implementing an AI-driven payment processing system like the one described here, businesses can:
- - Reduce human error and bias in financial decisions
- - Speed up payment processes, improving relationships with vendors
- - Generate detailed, consistent reports for better financial tracking
- - Free up human resources for more strategic tasks
-
-While our example company is fictional, the technologies and techniques discussed are very real and applicable to businesses of all sizes. Whether you're a tech-savvy startup or a traditional corporation looking to modernize, this article provides valuable insights into the practical application of AI in business processes.
+In today's fast-paced business world, AI isn't just a buzzwordit's becoming a necessity. This article shows you, through the lens of a fictional company called OptChain Solutions, how AI can be implemented to solve real-world supply chain problems.
+Whether you're a business owner looking to streamline operations, a developer interested in AI applications, or just someone curious about how modern businesses run, this article has something for you. You'll get a behind-the-scenes look at how AI can crunch numbers, predict trends, and offer insights that can save companies millions. It's a peek into the future of business operations, and trust me, it's pretty exciting!
 
 
 ## Architecture
 ![Design Diagram](design_docs/design.png)
 
 
-# Tutorial: Let's Build Enterprise Payment Processing Department Using AI Agents, All Open Source
+# Tutorial: How I Built Supply Chain Optimization Using AI Agents
 
 ## Prerequisites
 - Python installed on your system.
@@ -65,7 +52,7 @@ While our example company is fictional, the technologies and techniques discusse
 
 **Install Project Dependencies:**
 
-Follow these steps to set up and run the ResearchAgents project:
+Follow these steps to set up and run the 'Supply Chain Optimization Using AI Agents' project:
 
 1. Navigate to your project directory:
    ```
@@ -80,7 +67,7 @@ Follow these steps to set up and run the ResearchAgents project:
    This command installs all the necessary Python packages listed in the requirements.txt file.
 
 
-## Run - Enterprise Payment Processing Department Using AI Agents, All Open Source
+## Run - How I Built Supply Chain Optimization Using AI Agents
 
    ```bash 
       # Run Payment Gateway FAST API

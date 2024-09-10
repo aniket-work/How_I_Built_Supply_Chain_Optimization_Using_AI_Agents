@@ -1,0 +1,2 @@
+GROQ_API_KEY = "GROQ_API_KEY"
+MODEL_NAME   = "Llama3-8b-8192"

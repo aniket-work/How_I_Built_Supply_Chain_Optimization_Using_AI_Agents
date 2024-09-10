@@ -1,56 +1,72 @@
 import streamlit as st
 import requests
-import pandas as pd
-import plotly.graph_objects as go
+import json
 
-BACKEND_URL = "http://localhost:8000"
+# Set the FastAPI backend URL
+backend_url = "http://localhost:8000/optimize_supply_chain"
 
-st.set_page_config(page_title="OptChain Solutions", page_icon="📊", layout="wide")
+# Streamlit page configuration
+st.title("Supply Chain Optimization using AI Agents")
+st.write("Enter supply chain details to receive AI-generated recommendations.")
 
-st.title("OptChain Solutions: Supply Chain Optimization System")
+# Inputs for supply chain data
+date = st.date_input("Date")
+product_id = st.number_input("Product ID", min_value=1, step=1)
+historical_demand = st.text_area("Historical Demand (comma-separated)", "100, 120, 140, 160, 180")
+current_inventory = st.number_input("Current Inventory", min_value=0.0, value=50.0)
+supplier_reliability = st.slider("Supplier Reliability (0 to 1)", min_value=0.0, max_value=1.0, value=0.85)
 
-with st.form("supply_chain_data"):
-    date = st.date_input("Date")
-    product_id = st.text_input("Product ID")
-    historical_demand = st.text_input("Historical Demand (comma-separated values)")
-    current_inventory = st.number_input("Current Inventory")
-    supplier_reliability = st.slider("Supplier Reliability", 0.0, 1.0, 0.5)
+# Parse the historical demand input into a list of floats
+try:
+    historical_demand = [float(d.strip()) for d in historical_demand.split(",")]
+except ValueError:
+    st.error("Please enter valid numbers for historical demand, separated by commas.")
+    historical_demand = []
 
-    submitted = st.form_submit_button("Optimize Supply Chain")
+# Button to run optimization
+if st.button("Run Optimization"):
+    if historical_demand:
+        # Prepare the data for the API request
+        supply_chain_data = {
+            "date": str(date),
+            "product_id": int(product_id),
+            "historical_demand": historical_demand,
+            "current_inventory": current_inventory,
+            "supplier_reliability": supplier_reliability
+        }
 
-if submitted:
-    historical_demand = [float(x.strip()) for x in historical_demand.split(",")]
-    data = {
-        "date": str(date),
-        "product_id": product_id,
-        "historical_demand": historical_demand,
-        "current_inventory": current_inventory,
-        "supplier_reliability": supplier_reliability
-    }
+        # Send the data to the FastAPI backend for optimization
+        response = requests.post(backend_url, json=supply_chain_data)
 
-    response = requests.post(f"{BACKEND_URL}/optimize_supply_chain", json=data)
+        if response.status_code == 200:
+            # Display the optimization results
+            optimization_result = response.json()
+            st.success("Optimization completed successfully!")
 
-    if response.status_code == 200:
-        result = response.json()
+            # Display Forecast
+            st.subheader("Forecast")
+            forecast_data = optimization_result.get('forecast', [])
+            if forecast_data:
+                st.line_chart(forecast_data)
+            else:
+                st.write("No forecast data available")
 
-        st.subheader("Optimization Results")
+            # Display other results
+            st.subheader("Optimization Results")
+            st.write(f"Reorder Point: {optimization_result.get('reorder_point', 0.0):.2f}")
+            st.write(f"Economic Order Quantity: {optimization_result.get('economic_order_quantity', 0.0):.2f}")
+            st.write(f"Supplier Risk: {optimization_result.get('supplier_risk', 0.0):.2f}")
 
-        # Demand Forecast
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(y=historical_demand, mode='lines', name='Historical Demand'))
-        fig.add_trace(go.Scatter(y=result['forecast'], mode='lines', name='Forecasted Demand'))
-        fig.update_layout(title='Demand Forecast', xaxis_title='Time', yaxis_title='Demand')
-        st.plotly_chart(fig)
+            # Display Recommendations
+            st.subheader("Recommendations")
+            recommendations = optimization_result.get('recommendations', [])
+            if recommendations:
+                for rec in recommendations:
+                    st.write(f"- {rec}")
+            else:
+                st.write("No recommendations available")
 
-        # Metrics
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Reorder Point", f"{result['reorder_point']:.2f}")
-        col2.metric("Economic Order Quantity", f"{result['economic_order_quantity']:.2f}")
-        col3.metric("Supplier Risk", f"{result['supplier_risk']:.2%}")
-
-        # Recommendations
-        st.subheader("Recommendations")
-        for rec in result['recommendations']:
-            st.write(f"• {rec}")
+        else:
+            st.error(f"Optimization failed: {response.text}")
     else:
-        st.error("Failed to optimize supply chain. Please try again.")
+        st.error("Please provide valid historical demand data.")
