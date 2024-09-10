@@ -1,0 +1,991 @@
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\backend\main.py", line 8, in <module>
+    from backend.agent.demand_forecaster import demand_forecaster_node
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\backend\agent\demand_forecaster.py", line 4, in <module>
+    from backend.agent.llm_service import LLMService
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\backend\agent\llm_service.py", line 29, in <module>
+    llm_service = LLMService()
+                  ^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\backend\agent\llm_service.py", line 17, in __init__
+    self.llm = ChatGroq(model=MODEL_NAME, groq_api_key=api_key)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\langchain_core\load\serializable.py", line 113, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\pydantic\v1\main.py", line 341, in __init__
+    raise validation_error
+pydantic.v1.error_wrappers.ValidationError: 1 validation error for ChatGroq
+__root__
+  Did not find groq_api_key, please add an environment variable `GROQ_API_KEY` which contains it, or pass `groq_api_key` as a named parameter. (type=value_error)
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\backend\main.py", line 39, in <module>
+    class SupplyChainState(TypedDict):
+                           ^^^^^^^^^
+NameError: name 'TypedDict' is not defined
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [21060]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2024-09-09 21:31:44.362 | ERROR    | __main__:optimize_supply_chain:108 - Error in optimization: Invalid json output: To predict the next 30 days of demand, I'll use a simple exponential smoothing (SES) method. This method is a popular and widely used technique for forecasting demand.
+
+Here's the code:
+```python
+import numpy as np
+
+# Historical demand data
+historical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]
+
+# Calculate the SES forecast
+alpha = 0.2  # smoothing factor
+forecast = []
+for i in range(30):
+    if i == 0:
+        forecast.append(historical_demand[-1])
+    else:
+        forecast.append(alpha * historical_demand[-i] + (1 - alpha) * forecast[-1])
+
+# Convert the forecast to a JSON array
+forecast_json = [{"day": i+1, "demand": forecast[i]} for i in range(30)]
+
+print(forecast_json)
+```
+Output:
+```
+[
+  {"day": 1, "demand": 180.0},
+  {"day": 2, "demand": 176.0},
+  {"day": 3, "demand": 172.8},
+  {"day": 4, "demand": 169.6},
+  {"day": 5, "demand": 166.4},
+  {"day": 6, "demand": 163.2},
+  {"day": 7, "demand": 160.0},
+  {"day": 8, "demand": 156.8},
+  {"day": 9, "demand": 153.6},
+  {"day": 10, "demand": 150.4},
+  {"day": 11, "demand": 147.2},
+  {"day": 12, "demand": 144.0},
+  {"day": 13, "demand": 140.8},
+  {"day": 14, "demand": 137.6},
+  {"day": 15, "demand": 134.4},
+  {"day": 16, "demand": 131.2},
+  {"day": 17, "demand": 128.0},
+  {"day": 18, "demand": 124.8},
+  {"day": 19, "demand": 121.6},
+  {"day": 20, "demand": 118.4},
+  {"day": 21, "demand": 115.2},
+  {"day": 22, "demand": 112.0},
+  {"day": 23, "demand": 108.8},
+  {"day": 24, "demand": 105.6},
+  {"day": 25, "demand": 102.4},
+  {"day": 26, "demand": 99.2},
+  {"day": 27, "demand": 96.0},
+  {"day": 28, "demand": 92.8},
+  {"day": 29, "demand": 89.6},
+  {"day": 30, "demand": 86.4}
+]
+```
+This output represents the predicted demand for the next 30 days. The forecast is based on the historical demand data and uses a smoothing factor of 0.2, which means that 20% of the latest demand value is used to update the forecast, and the remaining 80% is based on the previous forecast.
+
+Keep in mind that this is a simple example, and in practice, you may want to consider more advanced techniques, such as ARIMA or machine learning models, to improve the accuracy of your demand forecast.
+INFO:     127.0.0.1:1369 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 406, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 70, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\errors.py", line 187, in __call__
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\routing.py", line 327, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\routing.py", line 176, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 6 validation errors:
+  {'type': 'missing', 'loc': ('response', 'forecast'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: To predict the next 30 days of demand, I\'ll use a simple exponential smoothing (SES) method. This method is a popular and widely used technique for forecasting demand.\n\nHere\'s the code:\n```python\nimport numpy as np\n\n# Historical demand data\nhistorical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Calculate the SES forecast\nalpha = 0.2  # smoothing factor\nforecast = []\nfor i in range(30):\n    if i == 0:\n        forecast.append(historical_demand[-1])\n    else:\n        forecast.append(alpha * historical_demand[-i] + (1 - alpha) * forecast[-1])\n\n# Convert the forecast to a JSON array\nforecast_json = [{"day": i+1, "demand": forecast[i]} for i in range(30)]\n\nprint(forecast_json)\n```\nOutput:\n```\n[\n  {"day": 1, "demand": 180.0},\n  {"day": 2, "demand": 176.0},\n  {"day": 3, "demand": 172.8},\n  {"day": 4, "demand": 169.6},\n  {"day": 5, "demand": 166.4},\n  {"day": 6, "demand": 163.2},\n  {"day": 7, "demand": 160.0},\n  {"day": 8, "demand": 156.8},\n  {"day": 9, "demand": 153.6},\n  {"day": 10, "demand": 150.4},\n  {"day": 11, "demand": 147.2},\n  {"day": 12, "demand": 144.0},\n  {"day": 13, "demand": 140.8},\n  {"day": 14, "demand": 137.6},\n  {"day": 15, "demand": 134.4},\n  {"day": 16, "demand": 131.2},\n  {"day": 17, "demand": 128.0},\n  {"day": 18, "demand": 124.8},\n  {"day": 19, "demand": 121.6},\n  {"day": 20, "demand": 118.4},\n  {"day": 21, "demand": 115.2},\n  {"day": 22, "demand": 112.0},\n  {"day": 23, "demand": 108.8},\n  {"day": 24, "demand": 105.6},\n  {"day": 25, "demand": 102.4},\n  {"day": 26, "demand": 99.2},\n  {"day": 27, "demand": 96.0},\n  {"day": 28, "demand": 92.8},\n  {"day": 29, "demand": 89.6},\n  {"day": 30, "demand": 86.4}\n]\n```\nThis output represents the predicted demand for the next 30 days. The forecast is based on the historical demand data and uses a smoothing factor of 0.2, which means that 20% of the latest demand value is used to update the forecast, and the remaining 80% is based on the previous forecast.\n\nKeep in mind that this is a simple example, and in practice, you may want to consider more advanced techniques, such as ARIMA or machine learning models, to improve the accuracy of your demand forecast.'}}
+  {'type': 'missing', 'loc': ('response', 'reorder_point'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: To predict the next 30 days of demand, I\'ll use a simple exponential smoothing (SES) method. This method is a popular and widely used technique for forecasting demand.\n\nHere\'s the code:\n```python\nimport numpy as np\n\n# Historical demand data\nhistorical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Calculate the SES forecast\nalpha = 0.2  # smoothing factor\nforecast = []\nfor i in range(30):\n    if i == 0:\n        forecast.append(historical_demand[-1])\n    else:\n        forecast.append(alpha * historical_demand[-i] + (1 - alpha) * forecast[-1])\n\n# Convert the forecast to a JSON array\nforecast_json = [{"day": i+1, "demand": forecast[i]} for i in range(30)]\n\nprint(forecast_json)\n```\nOutput:\n```\n[\n  {"day": 1, "demand": 180.0},\n  {"day": 2, "demand": 176.0},\n  {"day": 3, "demand": 172.8},\n  {"day": 4, "demand": 169.6},\n  {"day": 5, "demand": 166.4},\n  {"day": 6, "demand": 163.2},\n  {"day": 7, "demand": 160.0},\n  {"day": 8, "demand": 156.8},\n  {"day": 9, "demand": 153.6},\n  {"day": 10, "demand": 150.4},\n  {"day": 11, "demand": 147.2},\n  {"day": 12, "demand": 144.0},\n  {"day": 13, "demand": 140.8},\n  {"day": 14, "demand": 137.6},\n  {"day": 15, "demand": 134.4},\n  {"day": 16, "demand": 131.2},\n  {"day": 17, "demand": 128.0},\n  {"day": 18, "demand": 124.8},\n  {"day": 19, "demand": 121.6},\n  {"day": 20, "demand": 118.4},\n  {"day": 21, "demand": 115.2},\n  {"day": 22, "demand": 112.0},\n  {"day": 23, "demand": 108.8},\n  {"day": 24, "demand": 105.6},\n  {"day": 25, "demand": 102.4},\n  {"day": 26, "demand": 99.2},\n  {"day": 27, "demand": 96.0},\n  {"day": 28, "demand": 92.8},\n  {"day": 29, "demand": 89.6},\n  {"day": 30, "demand": 86.4}\n]\n```\nThis output represents the predicted demand for the next 30 days. The forecast is based on the historical demand data and uses a smoothing factor of 0.2, which means that 20% of the latest demand value is used to update the forecast, and the remaining 80% is based on the previous forecast.\n\nKeep in mind that this is a simple example, and in practice, you may want to consider more advanced techniques, such as ARIMA or machine learning models, to improve the accuracy of your demand forecast.'}}
+  {'type': 'missing', 'loc': ('response', 'economic_order_quantity'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: To predict the next 30 days of demand, I\'ll use a simple exponential smoothing (SES) method. This method is a popular and widely used technique for forecasting demand.\n\nHere\'s the code:\n```python\nimport numpy as np\n\n# Historical demand data\nhistorical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Calculate the SES forecast\nalpha = 0.2  # smoothing factor\nforecast = []\nfor i in range(30):\n    if i == 0:\n        forecast.append(historical_demand[-1])\n    else:\n        forecast.append(alpha * historical_demand[-i] + (1 - alpha) * forecast[-1])\n\n# Convert the forecast to a JSON array\nforecast_json = [{"day": i+1, "demand": forecast[i]} for i in range(30)]\n\nprint(forecast_json)\n```\nOutput:\n```\n[\n  {"day": 1, "demand": 180.0},\n  {"day": 2, "demand": 176.0},\n  {"day": 3, "demand": 172.8},\n  {"day": 4, "demand": 169.6},\n  {"day": 5, "demand": 166.4},\n  {"day": 6, "demand": 163.2},\n  {"day": 7, "demand": 160.0},\n  {"day": 8, "demand": 156.8},\n  {"day": 9, "demand": 153.6},\n  {"day": 10, "demand": 150.4},\n  {"day": 11, "demand": 147.2},\n  {"day": 12, "demand": 144.0},\n  {"day": 13, "demand": 140.8},\n  {"day": 14, "demand": 137.6},\n  {"day": 15, "demand": 134.4},\n  {"day": 16, "demand": 131.2},\n  {"day": 17, "demand": 128.0},\n  {"day": 18, "demand": 124.8},\n  {"day": 19, "demand": 121.6},\n  {"day": 20, "demand": 118.4},\n  {"day": 21, "demand": 115.2},\n  {"day": 22, "demand": 112.0},\n  {"day": 23, "demand": 108.8},\n  {"day": 24, "demand": 105.6},\n  {"day": 25, "demand": 102.4},\n  {"day": 26, "demand": 99.2},\n  {"day": 27, "demand": 96.0},\n  {"day": 28, "demand": 92.8},\n  {"day": 29, "demand": 89.6},\n  {"day": 30, "demand": 86.4}\n]\n```\nThis output represents the predicted demand for the next 30 days. The forecast is based on the historical demand data and uses a smoothing factor of 0.2, which means that 20% of the latest demand value is used to update the forecast, and the remaining 80% is based on the previous forecast.\n\nKeep in mind that this is a simple example, and in practice, you may want to consider more advanced techniques, such as ARIMA or machine learning models, to improve the accuracy of your demand forecast.'}}
+  {'type': 'missing', 'loc': ('response', 'supplier_risk'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: To predict the next 30 days of demand, I\'ll use a simple exponential smoothing (SES) method. This method is a popular and widely used technique for forecasting demand.\n\nHere\'s the code:\n```python\nimport numpy as np\n\n# Historical demand data\nhistorical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Calculate the SES forecast\nalpha = 0.2  # smoothing factor\nforecast = []\nfor i in range(30):\n    if i == 0:\n        forecast.append(historical_demand[-1])\n    else:\n        forecast.append(alpha * historical_demand[-i] + (1 - alpha) * forecast[-1])\n\n# Convert the forecast to a JSON array\nforecast_json = [{"day": i+1, "demand": forecast[i]} for i in range(30)]\n\nprint(forecast_json)\n```\nOutput:\n```\n[\n  {"day": 1, "demand": 180.0},\n  {"day": 2, "demand": 176.0},\n  {"day": 3, "demand": 172.8},\n  {"day": 4, "demand": 169.6},\n  {"day": 5, "demand": 166.4},\n  {"day": 6, "demand": 163.2},\n  {"day": 7, "demand": 160.0},\n  {"day": 8, "demand": 156.8},\n  {"day": 9, "demand": 153.6},\n  {"day": 10, "demand": 150.4},\n  {"day": 11, "demand": 147.2},\n  {"day": 12, "demand": 144.0},\n  {"day": 13, "demand": 140.8},\n  {"day": 14, "demand": 137.6},\n  {"day": 15, "demand": 134.4},\n  {"day": 16, "demand": 131.2},\n  {"day": 17, "demand": 128.0},\n  {"day": 18, "demand": 124.8},\n  {"day": 19, "demand": 121.6},\n  {"day": 20, "demand": 118.4},\n  {"day": 21, "demand": 115.2},\n  {"day": 22, "demand": 112.0},\n  {"day": 23, "demand": 108.8},\n  {"day": 24, "demand": 105.6},\n  {"day": 25, "demand": 102.4},\n  {"day": 26, "demand": 99.2},\n  {"day": 27, "demand": 96.0},\n  {"day": 28, "demand": 92.8},\n  {"day": 29, "demand": 89.6},\n  {"day": 30, "demand": 86.4}\n]\n```\nThis output represents the predicted demand for the next 30 days. The forecast is based on the historical demand data and uses a smoothing factor of 0.2, which means that 20% of the latest demand value is used to update the forecast, and the remaining 80% is based on the previous forecast.\n\nKeep in mind that this is a simple example, and in practice, you may want to consider more advanced techniques, such as ARIMA or machine learning models, to improve the accuracy of your demand forecast.'}}
+  {'type': 'missing', 'loc': ('response', 'recommendations'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: To predict the next 30 days of demand, I\'ll use a simple exponential smoothing (SES) method. This method is a popular and widely used technique for forecasting demand.\n\nHere\'s the code:\n```python\nimport numpy as np\n\n# Historical demand data\nhistorical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Calculate the SES forecast\nalpha = 0.2  # smoothing factor\nforecast = []\nfor i in range(30):\n    if i == 0:\n        forecast.append(historical_demand[-1])\n    else:\n        forecast.append(alpha * historical_demand[-i] + (1 - alpha) * forecast[-1])\n\n# Convert the forecast to a JSON array\nforecast_json = [{"day": i+1, "demand": forecast[i]} for i in range(30)]\n\nprint(forecast_json)\n```\nOutput:\n```\n[\n  {"day": 1, "demand": 180.0},\n  {"day": 2, "demand": 176.0},\n  {"day": 3, "demand": 172.8},\n  {"day": 4, "demand": 169.6},\n  {"day": 5, "demand": 166.4},\n  {"day": 6, "demand": 163.2},\n  {"day": 7, "demand": 160.0},\n  {"day": 8, "demand": 156.8},\n  {"day": 9, "demand": 153.6},\n  {"day": 10, "demand": 150.4},\n  {"day": 11, "demand": 147.2},\n  {"day": 12, "demand": 144.0},\n  {"day": 13, "demand": 140.8},\n  {"day": 14, "demand": 137.6},\n  {"day": 15, "demand": 134.4},\n  {"day": 16, "demand": 131.2},\n  {"day": 17, "demand": 128.0},\n  {"day": 18, "demand": 124.8},\n  {"day": 19, "demand": 121.6},\n  {"day": 20, "demand": 118.4},\n  {"day": 21, "demand": 115.2},\n  {"day": 22, "demand": 112.0},\n  {"day": 23, "demand": 108.8},\n  {"day": 24, "demand": 105.6},\n  {"day": 25, "demand": 102.4},\n  {"day": 26, "demand": 99.2},\n  {"day": 27, "demand": 96.0},\n  {"day": 28, "demand": 92.8},\n  {"day": 29, "demand": 89.6},\n  {"day": 30, "demand": 86.4}\n]\n```\nThis output represents the predicted demand for the next 30 days. The forecast is based on the historical demand data and uses a smoothing factor of 0.2, which means that 20% of the latest demand value is used to update the forecast, and the remaining 80% is based on the previous forecast.\n\nKeep in mind that this is a simple example, and in practice, you may want to consider more advanced techniques, such as ARIMA or machine learning models, to improve the accuracy of your demand forecast.'}}
+  {'type': 'missing', 'loc': ('response', 'current_inventory'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: To predict the next 30 days of demand, I\'ll use a simple exponential smoothing (SES) method. This method is a popular and widely used technique for forecasting demand.\n\nHere\'s the code:\n```python\nimport numpy as np\n\n# Historical demand data\nhistorical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Calculate the SES forecast\nalpha = 0.2  # smoothing factor\nforecast = []\nfor i in range(30):\n    if i == 0:\n        forecast.append(historical_demand[-1])\n    else:\n        forecast.append(alpha * historical_demand[-i] + (1 - alpha) * forecast[-1])\n\n# Convert the forecast to a JSON array\nforecast_json = [{"day": i+1, "demand": forecast[i]} for i in range(30)]\n\nprint(forecast_json)\n```\nOutput:\n```\n[\n  {"day": 1, "demand": 180.0},\n  {"day": 2, "demand": 176.0},\n  {"day": 3, "demand": 172.8},\n  {"day": 4, "demand": 169.6},\n  {"day": 5, "demand": 166.4},\n  {"day": 6, "demand": 163.2},\n  {"day": 7, "demand": 160.0},\n  {"day": 8, "demand": 156.8},\n  {"day": 9, "demand": 153.6},\n  {"day": 10, "demand": 150.4},\n  {"day": 11, "demand": 147.2},\n  {"day": 12, "demand": 144.0},\n  {"day": 13, "demand": 140.8},\n  {"day": 14, "demand": 137.6},\n  {"day": 15, "demand": 134.4},\n  {"day": 16, "demand": 131.2},\n  {"day": 17, "demand": 128.0},\n  {"day": 18, "demand": 124.8},\n  {"day": 19, "demand": 121.6},\n  {"day": 20, "demand": 118.4},\n  {"day": 21, "demand": 115.2},\n  {"day": 22, "demand": 112.0},\n  {"day": 23, "demand": 108.8},\n  {"day": 24, "demand": 105.6},\n  {"day": 25, "demand": 102.4},\n  {"day": 26, "demand": 99.2},\n  {"day": 27, "demand": 96.0},\n  {"day": 28, "demand": 92.8},\n  {"day": 29, "demand": 89.6},\n  {"day": 30, "demand": 86.4}\n]\n```\nThis output represents the predicted demand for the next 30 days. The forecast is based on the historical demand data and uses a smoothing factor of 0.2, which means that 20% of the latest demand value is used to update the forecast, and the remaining 80% is based on the previous forecast.\n\nKeep in mind that this is a simple example, and in practice, you may want to consider more advanced techniques, such as ARIMA or machine learning models, to improve the accuracy of your demand forecast.'}}
+
+2024-09-09 21:32:24.675 | ERROR    | __main__:optimize_supply_chain:108 - Error in optimization: list indices must be integers or slices, not str
+INFO:     127.0.0.1:1416 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 406, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 70, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\errors.py", line 187, in __call__
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\routing.py", line 327, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\routing.py", line 176, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 6 validation errors:
+  {'type': 'missing', 'loc': ('response', 'forecast'), 'msg': 'Field required', 'input': {'error': 'list indices must be integers or slices, not str'}}
+  {'type': 'missing', 'loc': ('response', 'reorder_point'), 'msg': 'Field required', 'input': {'error': 'list indices must be integers or slices, not str'}}
+  {'type': 'missing', 'loc': ('response', 'economic_order_quantity'), 'msg': 'Field required', 'input': {'error': 'list indices must be integers or slices, not str'}}
+  {'type': 'missing', 'loc': ('response', 'supplier_risk'), 'msg': 'Field required', 'input': {'error': 'list indices must be integers or slices, not str'}}
+  {'type': 'missing', 'loc': ('response', 'recommendations'), 'msg': 'Field required', 'input': {'error': 'list indices must be integers or slices, not str'}}
+  {'type': 'missing', 'loc': ('response', 'current_inventory'), 'msg': 'Field required', 'input': {'error': 'list indices must be integers or slices, not str'}}
+
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [21060]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [4624]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2024-09-09 21:35:22.005 | ERROR    | __main__:optimize_supply_chain:109 - Error in optimization: Invalid json output: Based on the historical demand data provided, I will use a simple exponential smoothing (SES) forecasting method to predict the next 30 days of demand.
+
+Here's the Python code to do the forecasting:
+```python
+import numpy as np
+from statsmodels.tsa.holtwinters import SimpleExpSmoothing
+
+# Historical demand data
+demand = np.array([100.0, 120.0, 140.0, 160.0, 180.0])
+
+# Create a SimpleExponentialSmoothing object
+ses = SimpleExpSmoothing(demand)
+
+# Fit the model
+ses_fit = ses.fit()
+
+# Generate forecasts for the next 30 days
+forecasts = ses_fit.forecast(steps=30)
+
+# Convert forecasts to JSON array format
+forecasts_json = [{"date": i, "demand": float(f)} for i, f in enumerate(forecasts)]
+
+print(forecasts_json)
+```
+Output:
+```
+[
+    {"date": 0, "demand": 192.0},
+    {"date": 1, "demand": 196.4},
+    {"date": 2, "demand": 201.0},
+    {"date": 3, "demand": 205.8},
+    {"date": 4, "demand": 210.8},
+    {"date": 5, "demand": 215.9},
+    {"date": 6, "demand": 221.1},
+    {"date": 7, "demand": 226.4},
+    {"date": 8, "demand": 231.8},
+    {"date": 9, "demand": 237.3},
+    {"date": 10, "demand": 243.0},
+    {"date": 11, "demand": 248.8},
+    {"date": 12, "demand": 254.7},
+    {"date": 13, "demand": 260.7},
+    {"date": 14, "demand": 266.8},
+    {"date": 15, "demand": 273.0},
+    {"date": 16, "demand": 279.3},
+    {"date": 17, "demand": 285.7},
+    {"date": 18, "demand": 292.2},
+    {"date": 19, "demand": 298.8},
+    {"date": 20, "demand": 305.5},
+    {"date": 21, "demand": 312.3},
+    {"date": 22, "demand": 319.2},
+    {"date": 23, "demand": 326.2},
+    {"date": 24, "demand": 333.3},
+    {"date": 25, "demand": 340.5},
+    {"date": 26, "demand": 347.8},
+    {"date": 27, "demand": 355.2},
+    {"date": 28, "demand": 362.7},
+    {"date": 29, "demand": 370.3},
+    {"date": 30, "demand": 378.0}
+]
+```
+The output is a JSON array of 30 forecasts, each containing a date (0-29) and a predicted demand value.
+INFO:     127.0.0.1:1482 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 406, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 70, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\errors.py", line 187, in __call__
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\routing.py", line 327, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\routing.py", line 176, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 6 validation errors:
+  {'type': 'missing', 'loc': ('response', 'forecast'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: Based on the historical demand data provided, I will use a simple exponential smoothing (SES) forecasting method to predict the next 30 days of demand.\n\nHere\'s the Python code to do the forecasting:\n```python\nimport numpy as np\nfrom statsmodels.tsa.holtwinters import SimpleExpSmoothing\n\n# Historical demand data\ndemand = np.array([100.0, 120.0, 140.0, 160.0, 180.0])\n\n# Create a SimpleExponentialSmoothing object\nses = SimpleExpSmoothing(demand)\n\n# Fit the model\nses_fit = ses.fit()\n\n# Generate forecasts for the next 30 days\nforecasts = ses_fit.forecast(steps=30)\n\n# Convert forecasts to JSON array format\nforecasts_json = [{"date": i, "demand": float(f)} for i, f in enumerate(forecasts)]\n\nprint(forecasts_json)\n```\nOutput:\n```\n[\n    {"date": 0, "demand": 192.0},\n    {"date": 1, "demand": 196.4},\n    {"date": 2, "demand": 201.0},\n    {"date": 3, "demand": 205.8},\n    {"date": 4, "demand": 210.8},\n    {"date": 5, "demand": 215.9},\n    {"date": 6, "demand": 221.1},\n    {"date": 7, "demand": 226.4},\n    {"date": 8, "demand": 231.8},\n    {"date": 9, "demand": 237.3},\n    {"date": 10, "demand": 243.0},\n    {"date": 11, "demand": 248.8},\n    {"date": 12, "demand": 254.7},\n    {"date": 13, "demand": 260.7},\n    {"date": 14, "demand": 266.8},\n    {"date": 15, "demand": 273.0},\n    {"date": 16, "demand": 279.3},\n    {"date": 17, "demand": 285.7},\n    {"date": 18, "demand": 292.2},\n    {"date": 19, "demand": 298.8},\n    {"date": 20, "demand": 305.5},\n    {"date": 21, "demand": 312.3},\n    {"date": 22, "demand": 319.2},\n    {"date": 23, "demand": 326.2},\n    {"date": 24, "demand": 333.3},\n    {"date": 25, "demand": 340.5},\n    {"date": 26, "demand": 347.8},\n    {"date": 27, "demand": 355.2},\n    {"date": 28, "demand": 362.7},\n    {"date": 29, "demand": 370.3},\n    {"date": 30, "demand": 378.0}\n]\n```\nThe output is a JSON array of 30 forecasts, each containing a date (0-29) and a predicted demand value.'}}
+  {'type': 'missing', 'loc': ('response', 'reorder_point'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: Based on the historical demand data provided, I will use a simple exponential smoothing (SES) forecasting method to predict the next 30 days of demand.\n\nHere\'s the Python code to do the forecasting:\n```python\nimport numpy as np\nfrom statsmodels.tsa.holtwinters import SimpleExpSmoothing\n\n# Historical demand data\ndemand = np.array([100.0, 120.0, 140.0, 160.0, 180.0])\n\n# Create a SimpleExponentialSmoothing object\nses = SimpleExpSmoothing(demand)\n\n# Fit the model\nses_fit = ses.fit()\n\n# Generate forecasts for the next 30 days\nforecasts = ses_fit.forecast(steps=30)\n\n# Convert forecasts to JSON array format\nforecasts_json = [{"date": i, "demand": float(f)} for i, f in enumerate(forecasts)]\n\nprint(forecasts_json)\n```\nOutput:\n```\n[\n    {"date": 0, "demand": 192.0},\n    {"date": 1, "demand": 196.4},\n    {"date": 2, "demand": 201.0},\n    {"date": 3, "demand": 205.8},\n    {"date": 4, "demand": 210.8},\n    {"date": 5, "demand": 215.9},\n    {"date": 6, "demand": 221.1},\n    {"date": 7, "demand": 226.4},\n    {"date": 8, "demand": 231.8},\n    {"date": 9, "demand": 237.3},\n    {"date": 10, "demand": 243.0},\n    {"date": 11, "demand": 248.8},\n    {"date": 12, "demand": 254.7},\n    {"date": 13, "demand": 260.7},\n    {"date": 14, "demand": 266.8},\n    {"date": 15, "demand": 273.0},\n    {"date": 16, "demand": 279.3},\n    {"date": 17, "demand": 285.7},\n    {"date": 18, "demand": 292.2},\n    {"date": 19, "demand": 298.8},\n    {"date": 20, "demand": 305.5},\n    {"date": 21, "demand": 312.3},\n    {"date": 22, "demand": 319.2},\n    {"date": 23, "demand": 326.2},\n    {"date": 24, "demand": 333.3},\n    {"date": 25, "demand": 340.5},\n    {"date": 26, "demand": 347.8},\n    {"date": 27, "demand": 355.2},\n    {"date": 28, "demand": 362.7},\n    {"date": 29, "demand": 370.3},\n    {"date": 30, "demand": 378.0}\n]\n```\nThe output is a JSON array of 30 forecasts, each containing a date (0-29) and a predicted demand value.'}}
+  {'type': 'missing', 'loc': ('response', 'economic_order_quantity'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: Based on the historical demand data provided, I will use a simple exponential smoothing (SES) forecasting method to predict the next 30 days of demand.\n\nHere\'s the Python code to do the forecasting:\n```python\nimport numpy as np\nfrom statsmodels.tsa.holtwinters import SimpleExpSmoothing\n\n# Historical demand data\ndemand = np.array([100.0, 120.0, 140.0, 160.0, 180.0])\n\n# Create a SimpleExponentialSmoothing object\nses = SimpleExpSmoothing(demand)\n\n# Fit the model\nses_fit = ses.fit()\n\n# Generate forecasts for the next 30 days\nforecasts = ses_fit.forecast(steps=30)\n\n# Convert forecasts to JSON array format\nforecasts_json = [{"date": i, "demand": float(f)} for i, f in enumerate(forecasts)]\n\nprint(forecasts_json)\n```\nOutput:\n```\n[\n    {"date": 0, "demand": 192.0},\n    {"date": 1, "demand": 196.4},\n    {"date": 2, "demand": 201.0},\n    {"date": 3, "demand": 205.8},\n    {"date": 4, "demand": 210.8},\n    {"date": 5, "demand": 215.9},\n    {"date": 6, "demand": 221.1},\n    {"date": 7, "demand": 226.4},\n    {"date": 8, "demand": 231.8},\n    {"date": 9, "demand": 237.3},\n    {"date": 10, "demand": 243.0},\n    {"date": 11, "demand": 248.8},\n    {"date": 12, "demand": 254.7},\n    {"date": 13, "demand": 260.7},\n    {"date": 14, "demand": 266.8},\n    {"date": 15, "demand": 273.0},\n    {"date": 16, "demand": 279.3},\n    {"date": 17, "demand": 285.7},\n    {"date": 18, "demand": 292.2},\n    {"date": 19, "demand": 298.8},\n    {"date": 20, "demand": 305.5},\n    {"date": 21, "demand": 312.3},\n    {"date": 22, "demand": 319.2},\n    {"date": 23, "demand": 326.2},\n    {"date": 24, "demand": 333.3},\n    {"date": 25, "demand": 340.5},\n    {"date": 26, "demand": 347.8},\n    {"date": 27, "demand": 355.2},\n    {"date": 28, "demand": 362.7},\n    {"date": 29, "demand": 370.3},\n    {"date": 30, "demand": 378.0}\n]\n```\nThe output is a JSON array of 30 forecasts, each containing a date (0-29) and a predicted demand value.'}}
+  {'type': 'missing', 'loc': ('response', 'supplier_risk'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: Based on the historical demand data provided, I will use a simple exponential smoothing (SES) forecasting method to predict the next 30 days of demand.\n\nHere\'s the Python code to do the forecasting:\n```python\nimport numpy as np\nfrom statsmodels.tsa.holtwinters import SimpleExpSmoothing\n\n# Historical demand data\ndemand = np.array([100.0, 120.0, 140.0, 160.0, 180.0])\n\n# Create a SimpleExponentialSmoothing object\nses = SimpleExpSmoothing(demand)\n\n# Fit the model\nses_fit = ses.fit()\n\n# Generate forecasts for the next 30 days\nforecasts = ses_fit.forecast(steps=30)\n\n# Convert forecasts to JSON array format\nforecasts_json = [{"date": i, "demand": float(f)} for i, f in enumerate(forecasts)]\n\nprint(forecasts_json)\n```\nOutput:\n```\n[\n    {"date": 0, "demand": 192.0},\n    {"date": 1, "demand": 196.4},\n    {"date": 2, "demand": 201.0},\n    {"date": 3, "demand": 205.8},\n    {"date": 4, "demand": 210.8},\n    {"date": 5, "demand": 215.9},\n    {"date": 6, "demand": 221.1},\n    {"date": 7, "demand": 226.4},\n    {"date": 8, "demand": 231.8},\n    {"date": 9, "demand": 237.3},\n    {"date": 10, "demand": 243.0},\n    {"date": 11, "demand": 248.8},\n    {"date": 12, "demand": 254.7},\n    {"date": 13, "demand": 260.7},\n    {"date": 14, "demand": 266.8},\n    {"date": 15, "demand": 273.0},\n    {"date": 16, "demand": 279.3},\n    {"date": 17, "demand": 285.7},\n    {"date": 18, "demand": 292.2},\n    {"date": 19, "demand": 298.8},\n    {"date": 20, "demand": 305.5},\n    {"date": 21, "demand": 312.3},\n    {"date": 22, "demand": 319.2},\n    {"date": 23, "demand": 326.2},\n    {"date": 24, "demand": 333.3},\n    {"date": 25, "demand": 340.5},\n    {"date": 26, "demand": 347.8},\n    {"date": 27, "demand": 355.2},\n    {"date": 28, "demand": 362.7},\n    {"date": 29, "demand": 370.3},\n    {"date": 30, "demand": 378.0}\n]\n```\nThe output is a JSON array of 30 forecasts, each containing a date (0-29) and a predicted demand value.'}}
+  {'type': 'missing', 'loc': ('response', 'recommendations'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: Based on the historical demand data provided, I will use a simple exponential smoothing (SES) forecasting method to predict the next 30 days of demand.\n\nHere\'s the Python code to do the forecasting:\n```python\nimport numpy as np\nfrom statsmodels.tsa.holtwinters import SimpleExpSmoothing\n\n# Historical demand data\ndemand = np.array([100.0, 120.0, 140.0, 160.0, 180.0])\n\n# Create a SimpleExponentialSmoothing object\nses = SimpleExpSmoothing(demand)\n\n# Fit the model\nses_fit = ses.fit()\n\n# Generate forecasts for the next 30 days\nforecasts = ses_fit.forecast(steps=30)\n\n# Convert forecasts to JSON array format\nforecasts_json = [{"date": i, "demand": float(f)} for i, f in enumerate(forecasts)]\n\nprint(forecasts_json)\n```\nOutput:\n```\n[\n    {"date": 0, "demand": 192.0},\n    {"date": 1, "demand": 196.4},\n    {"date": 2, "demand": 201.0},\n    {"date": 3, "demand": 205.8},\n    {"date": 4, "demand": 210.8},\n    {"date": 5, "demand": 215.9},\n    {"date": 6, "demand": 221.1},\n    {"date": 7, "demand": 226.4},\n    {"date": 8, "demand": 231.8},\n    {"date": 9, "demand": 237.3},\n    {"date": 10, "demand": 243.0},\n    {"date": 11, "demand": 248.8},\n    {"date": 12, "demand": 254.7},\n    {"date": 13, "demand": 260.7},\n    {"date": 14, "demand": 266.8},\n    {"date": 15, "demand": 273.0},\n    {"date": 16, "demand": 279.3},\n    {"date": 17, "demand": 285.7},\n    {"date": 18, "demand": 292.2},\n    {"date": 19, "demand": 298.8},\n    {"date": 20, "demand": 305.5},\n    {"date": 21, "demand": 312.3},\n    {"date": 22, "demand": 319.2},\n    {"date": 23, "demand": 326.2},\n    {"date": 24, "demand": 333.3},\n    {"date": 25, "demand": 340.5},\n    {"date": 26, "demand": 347.8},\n    {"date": 27, "demand": 355.2},\n    {"date": 28, "demand": 362.7},\n    {"date": 29, "demand": 370.3},\n    {"date": 30, "demand": 378.0}\n]\n```\nThe output is a JSON array of 30 forecasts, each containing a date (0-29) and a predicted demand value.'}}
+  {'type': 'missing', 'loc': ('response', 'current_inventory'), 'msg': 'Field required', 'input': {'error': 'Invalid json output: Based on the historical demand data provided, I will use a simple exponential smoothing (SES) forecasting method to predict the next 30 days of demand.\n\nHere\'s the Python code to do the forecasting:\n```python\nimport numpy as np\nfrom statsmodels.tsa.holtwinters import SimpleExpSmoothing\n\n# Historical demand data\ndemand = np.array([100.0, 120.0, 140.0, 160.0, 180.0])\n\n# Create a SimpleExponentialSmoothing object\nses = SimpleExpSmoothing(demand)\n\n# Fit the model\nses_fit = ses.fit()\n\n# Generate forecasts for the next 30 days\nforecasts = ses_fit.forecast(steps=30)\n\n# Convert forecasts to JSON array format\nforecasts_json = [{"date": i, "demand": float(f)} for i, f in enumerate(forecasts)]\n\nprint(forecasts_json)\n```\nOutput:\n```\n[\n    {"date": 0, "demand": 192.0},\n    {"date": 1, "demand": 196.4},\n    {"date": 2, "demand": 201.0},\n    {"date": 3, "demand": 205.8},\n    {"date": 4, "demand": 210.8},\n    {"date": 5, "demand": 215.9},\n    {"date": 6, "demand": 221.1},\n    {"date": 7, "demand": 226.4},\n    {"date": 8, "demand": 231.8},\n    {"date": 9, "demand": 237.3},\n    {"date": 10, "demand": 243.0},\n    {"date": 11, "demand": 248.8},\n    {"date": 12, "demand": 254.7},\n    {"date": 13, "demand": 260.7},\n    {"date": 14, "demand": 266.8},\n    {"date": 15, "demand": 273.0},\n    {"date": 16, "demand": 279.3},\n    {"date": 17, "demand": 285.7},\n    {"date": 18, "demand": 292.2},\n    {"date": 19, "demand": 298.8},\n    {"date": 20, "demand": 305.5},\n    {"date": 21, "demand": 312.3},\n    {"date": 22, "demand": 319.2},\n    {"date": 23, "demand": 326.2},\n    {"date": 24, "demand": 333.3},\n    {"date": 25, "demand": 340.5},\n    {"date": 26, "demand": 347.8},\n    {"date": 27, "demand": 355.2},\n    {"date": 28, "demand": 362.7},\n    {"date": 29, "demand": 370.3},\n    {"date": 30, "demand": 378.0}\n]\n```\nThe output is a JSON array of 30 forecasts, each containing a date (0-29) and a predicted demand value.'}}
+
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4624]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [27604]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2024-09-09 21:39:11.973 | ERROR    | __main__:optimize_supply_chain:109 - Error in optimization: Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. For this, I will use a simple moving average method, which is a common and effective method for demand forecasting.
+
+Here is the historical data:
+
+[100.0, 120.0, 140.0, 160.0, 180.0]
+
+To generate the forecast, I will first calculate the moving average of the historical data. The moving average is the average of the previous 'n' data points. I will use a moving average of 3, which means I will take the average of the last 3 data points.
+
+The moving average is:
+
+(120.0 + 140.0 + 160.0) / 3 = 140.0
+
+Now, I will generate the forecast for the next 30 days. I will start by generating a forecast for the next day, then the next day, and so on, for the next 30 days.
+
+Here are the forecasts:
+
+[141.0, 142.0, 143.0, 144.0, 145.0, 146.0, 147.0, 148.0, 149.0, 150.0, 151.0, 152.0, 153.0, 154.0, 155.0, 156.0, 157.0, 158.0, 159.0, 160.0, 161.0, 162.0, 163.0, 164.0, 165.0, 166.0, 167.0, 168.0, 169.0, 170.0, 171.0]
+
+The forecasts are in the same unit as the historical data (e.g., units demanded).
+INFO:     127.0.0.1:1590 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\uvicorn\protocols\http\h11_impl.py", line 406, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 70, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\errors.py", line 187, in __call__
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 62, in wrapped_app
+    raise exc
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\_exception_handler.py", line 51, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\routing.py", line 327, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents\How_I_Built_Supply_Chain_Optimization_Using_AI_Agent\Lib\site-packages\fastapi\routing.py", line 176, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 6 validation errors:
+  {'type': 'missing', 'loc': ('response', 'forecast'), 'msg': 'Field required', 'input': {'error': "Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. For this, I will use a simple moving average method, which is a common and effective method for demand forecasting.\n\nHere is the historical data:\n\n[100.0, 120.0, 140.0, 160.0, 180.0]\n\nTo generate the forecast, I will first calculate the moving average of the historical data. The moving average is the average of the previous 'n' data points. I will use a moving average of 3, which means I will take the average of the last 3 data points.\n\nThe moving average is:\n\n(120.0 + 140.0 + 160.0) / 3 = 140.0\n\nNow, I will generate the forecast for the next 30 days. I will start by generating a forecast for the next day, then the next day, and so on, for the next 30 days.\n\nHere are the forecasts:\n\n[141.0, 142.0, 143.0, 144.0, 145.0, 146.0, 147.0, 148.0, 149.0, 150.0, 151.0, 152.0, 153.0, 154.0, 155.0, 156.0, 157.0, 158.0, 159.0, 160.0, 161.0, 162.0, 163.0, 164.0, 165.0, 166.0, 167.0, 168.0, 169.0, 170.0, 171.0]\n\nThe forecasts are in the same unit as the historical data (e.g., units demanded)."}}
+  {'type': 'missing', 'loc': ('response', 'reorder_point'), 'msg': 'Field required', 'input': {'error': "Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. For this, I will use a simple moving average method, which is a common and effective method for demand forecasting.\n\nHere is the historical data:\n\n[100.0, 120.0, 140.0, 160.0, 180.0]\n\nTo generate the forecast, I will first calculate the moving average of the historical data. The moving average is the average of the previous 'n' data points. I will use a moving average of 3, which means I will take the average of the last 3 data points.\n\nThe moving average is:\n\n(120.0 + 140.0 + 160.0) / 3 = 140.0\n\nNow, I will generate the forecast for the next 30 days. I will start by generating a forecast for the next day, then the next day, and so on, for the next 30 days.\n\nHere are the forecasts:\n\n[141.0, 142.0, 143.0, 144.0, 145.0, 146.0, 147.0, 148.0, 149.0, 150.0, 151.0, 152.0, 153.0, 154.0, 155.0, 156.0, 157.0, 158.0, 159.0, 160.0, 161.0, 162.0, 163.0, 164.0, 165.0, 166.0, 167.0, 168.0, 169.0, 170.0, 171.0]\n\nThe forecasts are in the same unit as the historical data (e.g., units demanded)."}}
+  {'type': 'missing', 'loc': ('response', 'economic_order_quantity'), 'msg': 'Field required', 'input': {'error': "Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. For this, I will use a simple moving average method, which is a common and effective method for demand forecasting.\n\nHere is the historical data:\n\n[100.0, 120.0, 140.0, 160.0, 180.0]\n\nTo generate the forecast, I will first calculate the moving average of the historical data. The moving average is the average of the previous 'n' data points. I will use a moving average of 3, which means I will take the average of the last 3 data points.\n\nThe moving average is:\n\n(120.0 + 140.0 + 160.0) / 3 = 140.0\n\nNow, I will generate the forecast for the next 30 days. I will start by generating a forecast for the next day, then the next day, and so on, for the next 30 days.\n\nHere are the forecasts:\n\n[141.0, 142.0, 143.0, 144.0, 145.0, 146.0, 147.0, 148.0, 149.0, 150.0, 151.0, 152.0, 153.0, 154.0, 155.0, 156.0, 157.0, 158.0, 159.0, 160.0, 161.0, 162.0, 163.0, 164.0, 165.0, 166.0, 167.0, 168.0, 169.0, 170.0, 171.0]\n\nThe forecasts are in the same unit as the historical data (e.g., units demanded)."}}
+  {'type': 'missing', 'loc': ('response', 'supplier_risk'), 'msg': 'Field required', 'input': {'error': "Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. For this, I will use a simple moving average method, which is a common and effective method for demand forecasting.\n\nHere is the historical data:\n\n[100.0, 120.0, 140.0, 160.0, 180.0]\n\nTo generate the forecast, I will first calculate the moving average of the historical data. The moving average is the average of the previous 'n' data points. I will use a moving average of 3, which means I will take the average of the last 3 data points.\n\nThe moving average is:\n\n(120.0 + 140.0 + 160.0) / 3 = 140.0\n\nNow, I will generate the forecast for the next 30 days. I will start by generating a forecast for the next day, then the next day, and so on, for the next 30 days.\n\nHere are the forecasts:\n\n[141.0, 142.0, 143.0, 144.0, 145.0, 146.0, 147.0, 148.0, 149.0, 150.0, 151.0, 152.0, 153.0, 154.0, 155.0, 156.0, 157.0, 158.0, 159.0, 160.0, 161.0, 162.0, 163.0, 164.0, 165.0, 166.0, 167.0, 168.0, 169.0, 170.0, 171.0]\n\nThe forecasts are in the same unit as the historical data (e.g., units demanded)."}}
+  {'type': 'missing', 'loc': ('response', 'recommendations'), 'msg': 'Field required', 'input': {'error': "Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. For this, I will use a simple moving average method, which is a common and effective method for demand forecasting.\n\nHere is the historical data:\n\n[100.0, 120.0, 140.0, 160.0, 180.0]\n\nTo generate the forecast, I will first calculate the moving average of the historical data. The moving average is the average of the previous 'n' data points. I will use a moving average of 3, which means I will take the average of the last 3 data points.\n\nThe moving average is:\n\n(120.0 + 140.0 + 160.0) / 3 = 140.0\n\nNow, I will generate the forecast for the next 30 days. I will start by generating a forecast for the next day, then the next day, and so on, for the next 30 days.\n\nHere are the forecasts:\n\n[141.0, 142.0, 143.0, 144.0, 145.0, 146.0, 147.0, 148.0, 149.0, 150.0, 151.0, 152.0, 153.0, 154.0, 155.0, 156.0, 157.0, 158.0, 159.0, 160.0, 161.0, 162.0, 163.0, 164.0, 165.0, 166.0, 167.0, 168.0, 169.0, 170.0, 171.0]\n\nThe forecasts are in the same unit as the historical data (e.g., units demanded)."}}
+  {'type': 'missing', 'loc': ('response', 'current_inventory'), 'msg': 'Field required', 'input': {'error': "Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. For this, I will use a simple moving average method, which is a common and effective method for demand forecasting.\n\nHere is the historical data:\n\n[100.0, 120.0, 140.0, 160.0, 180.0]\n\nTo generate the forecast, I will first calculate the moving average of the historical data. The moving average is the average of the previous 'n' data points. I will use a moving average of 3, which means I will take the average of the last 3 data points.\n\nThe moving average is:\n\n(120.0 + 140.0 + 160.0) / 3 = 140.0\n\nNow, I will generate the forecast for the next 30 days. I will start by generating a forecast for the next day, then the next day, and so on, for the next 30 days.\n\nHere are the forecasts:\n\n[141.0, 142.0, 143.0, 144.0, 145.0, 146.0, 147.0, 148.0, 149.0, 150.0, 151.0, 152.0, 153.0, 154.0, 155.0, 156.0, 157.0, 158.0, 159.0, 160.0, 161.0, 162.0, 163.0, 164.0, 165.0, 166.0, 167.0, 168.0, 169.0, 170.0, 171.0]\n\nThe forecasts are in the same unit as the historical data (e.g., units demanded)."}}
+
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [27604]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [21308]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:1817 - "POST /optimize_supply_chain HTTP/1.1" 422 Unprocessable Entity
+2024-09-09 21:52:10.592 | ERROR    | __main__:optimize_supply_chain:129 - Error in optimization: Invalid json output: I can help you with that! To forecast the demand for the next 30 days, I'll use a simple moving average (MA) model. This model assumes that the demand follows a trend and that the trend will continue into the future.
+
+Here's the code:
+
+```Python
+historical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]
+
+# Calculate the moving average
+moving_average = [sum(historical_demand[:i+1])/(i+1) for i in range(len(historical_demand))]
+
+# Forecast the demand for the next 30 days
+forecasts = [moving_average[-1] + (moving_average[-1] - moving_average[-2]) for _ in range(30)]
+
+print(forecasts)
+```
+
+The output of this code is a list of floats representing the forecasted demand for the next 30 days. This list is:
+
+```
+[180.0, 184.0, 188.0, 192.0, 196.0, 200.0, 204.0, 208.0, 212.0, 216.0, 220.0, 224.0, 228.0, 232.0, 236.0, 240.0, 244.0, 248.0, 252.0, 256.0, 260.0, 264.0, 268.0, 272.0, 276.0, 280.0, 284.0, 288.0, 292.0]
+```
+
+These forecasts assume that the trend will continue, and the demand will increase by the same amount each day.
+INFO:     127.0.0.1:1900 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [21308]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [8856]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+ERROR:backend.agent.llm_service:Error in generate_response: Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. Since the historical data is quarterly, I will apply a simple linear extrapolation model to forecast the demand.
+
+Here's the historical demand data:
+
+[100.0, 120.0, 140.0, 160.0, 180.0]
+
+The trend of the historical data can be seen as a steady increase in demand over time. Therefore, I will use a simple linear extrapolation model to forecast the demand for the next 30 days.
+
+Here's the forecasted demand for the next 30 days:
+
+[180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0, 720.0, 740.0, 760.0]
+
+The forecasted demand is a simple extension of the historical trend, assuming that the demand will continue to increase steadily over time.
+
+Please note that this is a very basic model and real-world demand forecasting is much more complex and typically involves more advanced statistical models and techniques.
+2024-09-09 21:58:23.380 | ERROR    | __main__:optimize_supply_chain:129 - Error in optimization: Invalid json output: Based on the historical demand data provided, I will generate forecasts for the next 30 days. Since the historical data is quarterly, I will apply a simple linear extrapolation model to forecast the demand.
+
+Here's the historical demand data:
+
+[100.0, 120.0, 140.0, 160.0, 180.0]
+
+The trend of the historical data can be seen as a steady increase in demand over time. Therefore, I will use a simple linear extrapolation model to forecast the demand for the next 30 days.
+
+Here's the forecasted demand for the next 30 days:
+
+[180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0, 720.0, 740.0, 760.0]
+
+The forecasted demand is a simple extension of the historical trend, assuming that the demand will continue to increase steadily over time.
+
+Please note that this is a very basic model and real-world demand forecasting is much more complex and typically involves more advanced statistical models and techniques.
+INFO:     127.0.0.1:1992 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [8856]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [24992]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content="Based on the historical demand data provided, I will generate a forecast for the next 30 days. \n\nHere is the Python code used for forecasting:\n\n```Python\nimport numpy as np\nfrom statsmodels.tsa.seasonal import seasonal_decompose\nfrom statsmodels.trend.holiday import Holiday\nfrom statsmodels.tsa.arima_model import ARIMA\nimport pandas as pd\n\n# Define the historical demand data\nhistorical_demand = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Convert the data to a pandas dataframe\ndf = pd.DataFrame(historical_demand, columns=['Demand'])\n\n# Fit the ARIMA model\nmodel = ARIMA(df, order=(5,1,0))\nmodel_fit = model.fit(disp=0)\n\n# Get the forecast\nforecast = model_fit.forecast(steps=30)\n\n# Convert the forecast to a list of floats\nforecast_list = [float(f) for f in forecast]\n\n# Return the forecast as a JSON object\nforecast_json = {'forecast': forecast_list}\nprint(forecast_json)\n```\n\nThe output of this code will be a JSON object containing a list of floats representing the forecasted demand for the next 30 days.\n\nPlease note that the parameters of the ARIMA model (p=5, d=1, q=0) are chosen based on the data and may need to be adjusted based on the specific characteristics of your data." response_metadata={'token_usage': {'completion_tokens': 301, 'prompt_tokens': 96, 'total_tokens': 397, 'completion_time': 0.250833333, 'prompt_time': 0.011542375, 'queue_time': 0.0037011549999999994, 'total_time': 0.262375708}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_a97cfe35ae', 'finish_reason': 'stop', 'logprobs': None} id='run-639b4416-e396-42a0-9b77-1ee50cd80281-0' usage_metadata={'input_tokens': 96, 'output_tokens': 301, 'total_tokens': 397}
+ERROR:backend.agent.llm_service:Error in generate_response: name 're' is not defined
+2024-09-09 22:00:50.457 | ERROR    | __main__:optimize_supply_chain:129 - Error in optimization: name 're' is not defined
+INFO:     127.0.0.1:2062 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [24992]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [25536]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='Based on the historical demand data provided, I\'ll generate forecasts for the next 30 days. For this example, I\'ll use a simple linear regression model to forecast the demand.\n\nHere\'s the Python code to generate the forecasts:\n```python\nimport numpy as np\nimport json\n\n# Historical demand data\ndemand_data = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Calculate the mean and slope of the historical demand data\nmean = np.mean(demand_data)\nslope = np.mean(demand_data) * 0.2  # assuming a 20% increase per unit time\n\n# Generate forecasts for the next 30 days\nforecasts = []\nfor i in range(30):\n    forecast = mean + slope * (i + 1)\n    forecasts.append(float(forecast))\n\n# Convert the forecasts to a JSON object\nforecast_json = {"forecast": forecasts}\n\n# Print the JSON object\nprint(json.dumps(forecast_json, indent=4))\n```\nRunning this code produces the following output:\n```\n{\n    "forecast": [\n        100.0,\n        104.0,\n        108.0,\n        112.0,\n        116.0,\n        120.0,\n        124.0,\n        128.0,\n        132.0,\n        136.0,\n        140.0,\n        144.0,\n        148.0,\n        152.0,\n        156.0,\n        160.0,\n        164.0,\n        168.0,\n        172.0,\n        176.0,\n        180.0,\n        184.0,\n        188.0,\n        192.0,\n        196.0,\n        200.0,\n        204.0,\n        208.0,\n        212.0,\n        216.0,\n        220.0\n    ]\n}\n```\nThe forecasts are stored in the `forecast_json` dictionary, which is then converted to a JSON object using the `json.dumps()` function. The output is a JSON object with a single key-value pair, where the key is `"forecast"` and the value is a list of 30 float values representing the demand forecasts for the next 30 days.' response_metadata={'token_usage': {'completion_tokens': 492, 'prompt_tokens': 96, 'total_tokens': 588, 'completion_time': 0.41, 'prompt_time': 0.014778028, 'queue_time': 0.008209422, 'total_time': 0.424778028}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_af05557ca2', 'finish_reason': 'stop', 'logprobs': None} id='run-ca1eecfc-013d-4fde-bac5-1829aa0f0608-0' usage_metadata={'input_tokens': 96, 'output_tokens': 492, 'total_tokens': 588}
+ERROR:backend.agent.llm_service:Error in generate_response: expected string or bytes-like object, got 'AIMessage'
+2024-09-09 22:02:23.348 | ERROR    | __main__:optimize_supply_chain:129 - Error in optimization: expected string or bytes-like object, got 'AIMessage'
+INFO:     127.0.0.1:2128 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [25536]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [13300]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='I can generate a forecast for the next 30 days based on the historical demand data you provided. Here\'s the forecast:\n\n```\n{\n    "forecast": [\n        200.0,\n        204.0,\n        208.0,\n        212.0,\n        216.0,\n        220.0,\n        224.0,\n        228.0,\n        232.0,\n        236.0,\n        240.0,\n        244.0,\n        248.0,\n        252.0,\n        256.0,\n        260.0,\n        264.0,\n        268.0,\n        272.0,\n        276.0,\n        280.0,\n        284.0,\n        288.0,\n        292.0,\n        296.0,\n        300.0,\n        304.0,\n        308.0\n    ]\n}\n```\n\nThis forecast is generated using a simple linear regression model. The model assumes that demand will continue to increase at a constant rate, based on the historical data.' response_metadata={'token_usage': {'completion_tokens': 238, 'prompt_tokens': 96, 'total_tokens': 334, 'completion_time': 0.198333333, 'prompt_time': 0.018413205, 'queue_time': 0.0016476450000000031, 'total_time': 0.216746538}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_a97cfe35ae', 'finish_reason': 'stop', 'logprobs': None} id='run-ef4b1506-a098-4b87-bf42-56ab44c4b4c6-0' usage_metadata={'input_tokens': 96, 'output_tokens': 238, 'total_tokens': 334}
+ERROR:backend.agent.llm_service:Error in generate_response: Failed to parse JSON from the response
+2024-09-09 22:04:34.694 | ERROR    | __main__:optimize_supply_chain:129 - Error in optimization: Failed to parse JSON from the response
+INFO:     127.0.0.1:2170 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [13300]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [9296]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='Here is a Python script using the ARIMA model to forecast the demand for the next 30 days:\n\n```python\nimport pandas as pd\nfrom pandas import Series\nfrom statsmodels.tsa.arima_model import ARIMA\nimport numpy as np\nimport json\n\n# Historical Demand Data\ndemand_data = [100.0, 120.0, 140.0, 160.0, 180.0]\n\n# Convert to pandas Series\nseries = Series(demand_data, dtype=float)\n\n# Fit ARIMA model\nmodel = ARIMA(series, order=(1,1,1))\nmodel_fit = model.fit(disp=-1)\n\n# Generate forecast for the next 30 days\nforecast = model_fit.forecast(steps=30)\n\n# Convert forecast to JSON\nforecast_json = json.dumps({\'forecast\': [float(forecast[i][0]) for i in range(30)]})\n\nprint(forecast_json)\n```\n\nHere is the output:\n\n```\n{"forecast": [160.0, 162.0, 164.0, 166.0, 168.0, 170.0, 172.0, 174.0, 176.0, 178.0, 180.0, 182.0, 184.0, 186.0, 188.0, 190.0, 192.0, 194.0, 196.0, 198.0, 200.0, 202.0, 204.0, 206.0, 208.0, 210.0, 212.0, 214.0, 216.0]}\n```\n\nThis JSON object contains a list of predicted demands for the next 30 days.' response_metadata={'token_usage': {'completion_tokens': 366, 'prompt_tokens': 106, 'total_tokens': 472, 'completion_time': 0.305, 'prompt_time': 0.013006322, 'queue_time': 0.0019398279999999993, 'total_time': 0.318006322}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_6a6771ae9c', 'finish_reason': 'stop', 'logprobs': None} id='run-95d060d2-8c5f-4ba4-b7bf-109c1f9f598c-0' usage_metadata={'input_tokens': 106, 'output_tokens': 366, 'total_tokens': 472}
+ERROR:backend.agent.llm_service:Error in generate_response: Failed to parse JSON from the response
+2024-09-09 22:06:28.260 | ERROR    | __main__:optimize_supply_chain:129 - Error in optimization: Failed to parse JSON from the response
+INFO:     127.0.0.1:2233 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9296]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [18864]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"forecast": [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0]\n}' response_metadata={'token_usage': {'completion_tokens': 136, 'prompt_tokens': 109, 'total_tokens': 245, 'completion_time': 0.113333333, 'prompt_time': 0.035972775, 'queue_time': 1.201775662, 'total_time': 0.149306108}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_179b0f92c9', 'finish_reason': 'stop', 'logprobs': None} id='run-64753413-95a0-400d-826c-404ba0635c93-0' usage_metadata={'input_tokens': 109, 'output_tokens': 136, 'total_tokens': 245}
+2024-09-09 22:12:48.102 | INFO     | backend.agent.demand_forecaster:demand_forecaster_node:25 - Forecast generated: [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0]
+2024-09-09 22:12:48.103 | INFO     | __main__:optimize_supply_chain:105 - Step completed: demand_forecaster
+2024-09-09 22:12:48.104 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'demand_forecaster': {'date': '2024-09-09', 'product_id': 1234, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='To calculate the reorder point and economic order quantity (EOQ), we\'ll first need to calculate the average demand and the standard deviation of demand.\n\nThe average demand can be calculated as the sum of the historical demand divided by the number of data points:\n\nAverage Demand = sum(Historical Demand) / len(Historical Demand)\n= 700.0 / 5\n= 140.0\n\nThe standard deviation of demand can be calculated using the following formula:\n\nStandard Deviation = sqrt(sum((Demand - Average Demand)^2) / (len(Historical Demand) - 1))\n\nHere\'s the Python code to calculate the standard deviation:\n\n```\nimport numpy as np\n\nHistorical Demand = [100.0, 120.0, 140.0, 160.0, 180.0]\naverage_demand = sum(Historical Demand) / len(Historical Demand)\nstd_dev = np.sqrt(sum([(x - average_demand)**2 for x in Historical Demand]) / (len(Historical Demand) - 1))\n```\n\nThe reorder point can be calculated as the average demand multiplied by the lead time (in this case, we\'ll assume a lead time of 1, but in reality, this would be the time it takes to restock the inventory). Add the current inventory to that:\n\nReorder Point = Average Demand * Lead Time + Current Inventory\n= 140.0 * 1 + 50.0\n= 190.0\n\nThe economic order quantity (EOQ) can be calculated using the following formula:\n\nEOQ = sqrt(2 * Average Demand * Standard Deviation / Holding Cost per Unit)\n\nLet\'s assume a holding cost per unit of $5 (this would be the cost of holding one unit of inventory for one period). \n\nEOQ = sqrt(2 * 140.0 * 25.09551111111112 / 5)\n= 27.744315\n\nSo, the reorder point is 190.0 and the economic order quantity (EOQ) is 27.744315.\n\nHere\'s the Python code to calculate the reorder point and EOQ:\n\n```\nimport numpy as np\n\nHistorical Demand = [100.0, 120.0, 140.0, 160.0, 180.0]\naverage_demand = sum(Historical Demand) / len(Historical Demand)\nstd_dev = np.sqrt(sum([(x - average_demand)**2 for x in Historical Demand]) / (len(Historical Demand) - 1))\nholding_cost_per_unit = 5.0\n\nreorder_point = average_demand * 1 + Current Inventory\neoq = np.sqrt(2 * average_demand * std_dev / holding_cost_per_unit)\n\nprint("Reorder Point: ", reorder_point)\nprint("EOQ: ", eoq)\n```\n\nWhen you run this code, it will output:\n\n```\nReorder Point:  190.0\nEOQ:  27.744315\n```' response_metadata={'token_usage': {'completion_tokens': 608, 'prompt_tokens': 94, 'total_tokens': 702, 'completion_time': 0.506666667, 'prompt_time': 0.011679482, 'queue_time': 0.002716014000000001, 'total_time': 0.518346149}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_6a6771ae9c', 'finish_reason': 'stop', 'logprobs': None} id='run-636cbded-bf16-4f00-bf40-6f71df20fcb3-0' usage_metadata={'input_tokens': 94, 'output_tokens': 608, 'total_tokens': 702}
+ERROR:backend.agent.llm_service:Error in generate_response: No JSON object found in the response
+2024-09-09 22:12:48.754 | ERROR    | __main__:optimize_supply_chain:129 - Error in optimization: No JSON object found in the response
+INFO:     127.0.0.1:2603 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18864]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [23584]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"forecast": [180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0]\n}' response_metadata={'token_usage': {'completion_tokens': 141, 'prompt_tokens': 109, 'total_tokens': 250, 'completion_time': 0.1175, 'prompt_time': 0.018146401, 'queue_time': 0.0016954170000000011, 'total_time': 0.135646401}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_179b0f92c9', 'finish_reason': 'stop', 'logprobs': None} id='run-95ea1a40-4605-49be-af60-a2b0f0735a92-0' usage_metadata={'input_tokens': 109, 'output_tokens': 141, 'total_tokens': 250}
+2024-09-09 22:19:45.217 | INFO     | backend.agent.demand_forecaster:demand_forecaster_node:25 - Forecast generated: [180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0]
+2024-09-09 22:19:45.218 | INFO     | __main__:optimize_supply_chain:105 - Step completed: demand_forecaster
+2024-09-09 22:19:45.218 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'demand_forecaster': {'date': '2024-09-09', 'product_id': 1234, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n    "reorder_point": 170.0,\n    "economic_order_quantity": 120.0\n}' response_metadata={'token_usage': {'completion_tokens': 25, 'prompt_tokens': 120, 'total_tokens': 145, 'completion_time': 0.020833333, 'prompt_time': 0.013200573, 'queue_time': 0.010165607, 'total_time': 0.034033906}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_af05557ca2', 'finish_reason': 'stop', 'logprobs': None} id='run-650d1410-6b56-47c1-8d54-cdfb6bcc4850-0' usage_metadata={'input_tokens': 120, 'output_tokens': 25, 'total_tokens': 145}
+2024-09-09 22:19:45.423 | INFO     | backend.agent.inventory_optimizer:inventory_optimizer_node:42 - Inventory optimization results: Reorder Point = 170.0, EOQ = 120.0
+2024-09-09 22:19:45.425 | INFO     | __main__:optimize_supply_chain:105 - Step completed: inventory_optimizer
+2024-09-09 22:19:45.426 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'inventory_optimizer': {'date': '2024-09-09', 'product_id': 1234, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0], 'reorder_point': 170.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"supplier_risk": 0.25\n}' response_metadata={'token_usage': {'completion_tokens': 13, 'prompt_tokens': 79, 'total_tokens': 92, 'completion_time': 0.010833333, 'prompt_time': 0.009830034, 'queue_time': 0.004822575000000001, 'total_time': 0.020663367}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_6a6771ae9c', 'finish_reason': 'stop', 'logprobs': None} id='run-5e33fbb0-cde7-4083-b0be-d6b29920ced2-0' usage_metadata={'input_tokens': 79, 'output_tokens': 13, 'total_tokens': 92}
+2024-09-09 22:19:45.598 | INFO     | backend.agent.supplier_risk_analyzer:supplier_risk_analyzer_node:28 - Supplier risk analyzed: 0.25
+2024-09-09 22:19:45.599 | INFO     | __main__:optimize_supply_chain:105 - Step completed: supplier_risk_analyzer
+2024-09-09 22:19:45.600 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'supplier_risk_analyzer': {'date': '2024-09-09', 'product_id': 1234, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0], 'reorder_point': 170.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.25, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"recommendations": [\n"Reorder now to avoid stockout risk and optimize inventory levels",\n"Consider adjusting the reorder point to 170.0 to minimize stockouts and overstocking",\n"Monitor supplier risk and adjust inventory levels accordingly to mitigate potential disruptions",\n"Consider increasing the economic order quantity to 120.0 to reduce the number of orders and optimize inventory levels"]\n}' response_metadata={'token_usage': {'completion_tokens': 79, 'prompt_tokens': 259, 'total_tokens': 338, 'completion_time': 0.065833333, 'prompt_time': 0.045574041, 'queue_time': 0.0020384489999999977, 'total_time': 0.111407374}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_179b0f92c9', 'finish_reason': 'stop', 'logprobs': None} id='run-fa779d10-2c4a-4106-9718-ca5bac729557-0' usage_metadata={'input_tokens': 259, 'output_tokens': 79, 'total_tokens': 338}
+2024-09-09 22:19:45.855 | INFO     | backend.agent.recommendation_generator:recommendation_generator_node:41 - Recommendations generated: ['Reorder now to avoid stockout risk and optimize inventory levels', 'Consider adjusting the reorder point to 170.0 to minimize stockouts and overstocking', 'Monitor supplier risk and adjust inventory levels accordingly to mitigate potential disruptions', 'Consider increasing the economic order quantity to 120.0 to reduce the number of orders and optimize inventory levels']
+2024-09-09 22:19:45.858 | INFO     | __main__:optimize_supply_chain:105 - Step completed: recommendation_generator
+2024-09-09 22:19:45.859 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'recommendation_generator': {'date': '2024-09-09', 'product_id': 1234, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0], 'reorder_point': 170.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.25, 'recommendations': ['Reorder now to avoid stockout risk and optimize inventory levels', 'Consider adjusting the reorder point to 170.0 to minimize stockouts and overstocking', 'Monitor supplier risk and adjust inventory levels accordingly to mitigate potential disruptions', 'Consider increasing the economic order quantity to 120.0 to reduce the number of orders and optimize inventory levels']}}
+2024-09-09 22:19:45.862 | INFO     | __main__:optimize_supply_chain:110 - Final state after workflow: {'recommendation_generator': {'date': '2024-09-09', 'product_id': 1234, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [180.0, 200.0, 220.0, 240.0, 260.0, 280.0, 300.0, 320.0, 340.0, 360.0, 380.0, 400.0, 420.0, 440.0, 460.0, 480.0, 500.0, 520.0, 540.0, 560.0, 580.0, 600.0, 620.0, 640.0, 660.0, 680.0, 700.0], 'reorder_point': 170.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.25, 'recommendations': ['Reorder now to avoid stockout risk and optimize inventory levels', 'Consider adjusting the reorder point to 170.0 to minimize stockouts and overstocking', 'Monitor supplier risk and adjust inventory levels accordingly to mitigate potential disruptions', 'Consider increasing the economic order quantity to 120.0 to reduce the number of orders and optimize inventory levels']}}
+INFO:     127.0.0.1:2762 - "POST /optimize_supply_chain HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [23584]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [26660]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"forecast": [\n205.17999999999998,\n220.0,\n235.0,\n250.0,\n265.0,\n280.0,\n295.0,\n310.0,\n325.0,\n340.0,\n355.0,\n370.0,\n385.0,\n400.0,\n415.0,\n430.0,\n445.0,\n460.0,\n475.0,\n490.0,\n505.0,\n520.0,\n535.0,\n550.0,\n565.0,\n580.0,\n595.0\n]\n}' response_metadata={'token_usage': {'completion_tokens': 120, 'prompt_tokens': 109, 'total_tokens': 229, 'completion_time': 0.1, 'prompt_time': 0.024186186, 'queue_time': 0.258397303, 'total_time': 0.124186186}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_179b0f92c9', 'finish_reason': 'stop', 'logprobs': None} id='run-4ab497ec-96cd-491e-bd2b-d4abca45b9e9-0' usage_metadata={'input_tokens': 109, 'output_tokens': 120, 'total_tokens': 229}
+2024-09-09 22:24:03.452 | INFO     | backend.agent.demand_forecaster:demand_forecaster_node:25 - Forecast generated: [205.17999999999998, 220.0, 235.0, 250.0, 265.0, 280.0, 295.0, 310.0, 325.0, 340.0, 355.0, 370.0, 385.0, 400.0, 415.0, 430.0, 445.0, 460.0, 475.0, 490.0, 505.0, 520.0, 535.0, 550.0, 565.0, 580.0, 595.0]
+2024-09-09 22:24:03.453 | INFO     | __main__:optimize_supply_chain:105 - Step completed: demand_forecaster
+2024-09-09 22:24:03.453 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'demand_forecaster': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [205.17999999999998, 220.0, 235.0, 250.0, 265.0, 280.0, 295.0, 310.0, 325.0, 340.0, 355.0, 370.0, 385.0, 400.0, 415.0, 430.0, 445.0, 460.0, 475.0, 490.0, 505.0, 520.0, 535.0, 550.0, 565.0, 580.0, 595.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n    "reorder_point": 130.0,\n    "economic_order_quantity": 140.0\n}' response_metadata={'token_usage': {'completion_tokens': 25, 'prompt_tokens': 120, 'total_tokens': 145, 'completion_time': 0.020833333, 'prompt_time': 0.020011274, 'queue_time': 0.09727047, 'total_time': 0.040844607}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_179b0f92c9', 'finish_reason': 'stop', 'logprobs': None} id='run-cb014e1e-aae0-4eba-89f0-180ceac02f5e-0' usage_metadata={'input_tokens': 120, 'output_tokens': 25, 'total_tokens': 145}
+2024-09-09 22:24:03.727 | INFO     | backend.agent.inventory_optimizer:inventory_optimizer_node:42 - Inventory optimization results: Reorder Point = 130.0, EOQ = 140.0
+2024-09-09 22:24:03.728 | INFO     | __main__:optimize_supply_chain:105 - Step completed: inventory_optimizer
+2024-09-09 22:24:03.729 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'inventory_optimizer': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [205.17999999999998, 220.0, 235.0, 250.0, 265.0, 280.0, 295.0, 310.0, 325.0, 340.0, 355.0, 370.0, 385.0, 400.0, 415.0, 430.0, 445.0, 460.0, 475.0, 490.0, 505.0, 520.0, 535.0, 550.0, 565.0, 580.0, 595.0], 'reorder_point': 130.0, 'economic_order_quantity': 140.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{"supplier_risk": 0.15}' response_metadata={'token_usage': {'completion_tokens': 11, 'prompt_tokens': 79, 'total_tokens': 90, 'completion_time': 0.009166667, 'prompt_time': 0.014854033, 'queue_time': 0.0019147729999999998, 'total_time': 0.0240207}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_a97cfe35ae', 'finish_reason': 'stop', 'logprobs': None} id='run-aa2ad705-0160-4596-ac93-57cb7be5b73e-0' usage_metadata={'input_tokens': 79, 'output_tokens': 11, 'total_tokens': 90}
+2024-09-09 22:24:03.886 | INFO     | backend.agent.supplier_risk_analyzer:supplier_risk_analyzer_node:28 - Supplier risk analyzed: 0.15
+2024-09-09 22:24:03.887 | INFO     | __main__:optimize_supply_chain:105 - Step completed: supplier_risk_analyzer
+2024-09-09 22:24:03.888 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'supplier_risk_analyzer': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [205.17999999999998, 220.0, 235.0, 250.0, 265.0, 280.0, 295.0, 310.0, 325.0, 340.0, 355.0, 370.0, 385.0, 400.0, 415.0, 430.0, 445.0, 460.0, 475.0, 490.0, 505.0, 520.0, 535.0, 550.0, 565.0, 580.0, 595.0], 'reorder_point': 130.0, 'economic_order_quantity': 140.0, 'supplier_risk': 0.15, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"recommendations": [\n"Reorder now to avoid stockout risk",\n"Order 140 units to hit the optimal reorder point",\n"Consider reducing supplier risk by diversifying suppliers"\n]\n}' response_metadata={'token_usage': {'completion_tokens': 41, 'prompt_tokens': 263, 'total_tokens': 304, 'completion_time': 0.034166667, 'prompt_time': 0.047736236, 'queue_time': 0.0016877640000000013, 'total_time': 0.081902903}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_6a6771ae9c', 'finish_reason': 'stop', 'logprobs': None} id='run-6361e9c4-b0ee-4e68-83f2-2cfd60f76984-0' usage_metadata={'input_tokens': 263, 'output_tokens': 41, 'total_tokens': 304}
+2024-09-09 22:24:04.101 | INFO     | backend.agent.recommendation_generator:recommendation_generator_node:41 - Recommendations generated: ['Reorder now to avoid stockout risk', 'Order 140 units to hit the optimal reorder point', 'Consider reducing supplier risk by diversifying suppliers']
+2024-09-09 22:24:04.102 | INFO     | __main__:optimize_supply_chain:105 - Step completed: recommendation_generator
+2024-09-09 22:24:04.102 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'recommendation_generator': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [205.17999999999998, 220.0, 235.0, 250.0, 265.0, 280.0, 295.0, 310.0, 325.0, 340.0, 355.0, 370.0, 385.0, 400.0, 415.0, 430.0, 445.0, 460.0, 475.0, 490.0, 505.0, 520.0, 535.0, 550.0, 565.0, 580.0, 595.0], 'reorder_point': 130.0, 'economic_order_quantity': 140.0, 'supplier_risk': 0.15, 'recommendations': ['Reorder now to avoid stockout risk', 'Order 140 units to hit the optimal reorder point', 'Consider reducing supplier risk by diversifying suppliers']}}
+2024-09-09 22:24:04.103 | INFO     | __main__:optimize_supply_chain:110 - Final state after workflow: {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [205.17999999999998, 220.0, 235.0, 250.0, 265.0, 280.0, 295.0, 310.0, 325.0, 340.0, 355.0, 370.0, 385.0, 400.0, 415.0, 430.0, 445.0, 460.0, 475.0, 490.0, 505.0, 520.0, 535.0, 550.0, 565.0, 580.0, 595.0], 'reorder_point': 130.0, 'economic_order_quantity': 140.0, 'supplier_risk': 0.15, 'recommendations': ['Reorder now to avoid stockout risk', 'Order 140 units to hit the optimal reorder point', 'Consider reducing supplier risk by diversifying suppliers']}
+2024-09-09 22:24:04.108 | ERROR    | __main__:optimize_supply_chain:124 - Error in optimization: 27 validation errors for OptimizationResult
+forecast.0
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=0, demand=205.17999999999998), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.1
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=1, demand=220.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.2
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=2, demand=235.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.3
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=3, demand=250.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.4
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=4, demand=265.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.5
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=5, demand=280.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.6
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=6, demand=295.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.7
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=7, demand=310.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.8
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=8, demand=325.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.9
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=9, demand=340.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.10
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=10, demand=355.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.11
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=11, demand=370.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.12
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=12, demand=385.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.13
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=13, demand=400.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.14
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=14, demand=415.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.15
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=15, demand=430.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.16
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=16, demand=445.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.17
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=17, demand=460.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.18
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=18, demand=475.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.19
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=19, demand=490.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.20
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=20, demand=505.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.21
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=21, demand=520.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.22
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=22, demand=535.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.23
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=23, demand=550.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.24
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=24, demand=565.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.25
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=25, demand=580.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.26
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=26, demand=595.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+INFO:     127.0.0.1:2955 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{"forecast": [165.0, 175.0, 185.0, 195.0, 205.0, 215.0, 225.0, 235.0, 245.0, 255.0, 265.0, 275.0, 285.0, 295.0, 305.0, 315.0, 325.0, 335.0, 345.0, 355.0, 365.0, 375.0, 385.0, 395.0, 405.0, 415.0, 425.0]}' response_metadata={'token_usage': {'completion_tokens': 139, 'prompt_tokens': 109, 'total_tokens': 248, 'completion_time': 0.115833333, 'prompt_time': 0.012361879, 'queue_time': 0.010940669, 'total_time': 0.128195212}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_af05557ca2', 'finish_reason': 'stop', 'logprobs': None} id='run-8910dd5a-cc09-42fa-9b45-d521fee1ee95-0' usage_metadata={'input_tokens': 109, 'output_tokens': 139, 'total_tokens': 248}
+2024-09-09 22:25:09.763 | INFO     | backend.agent.demand_forecaster:demand_forecaster_node:25 - Forecast generated: [165.0, 175.0, 185.0, 195.0, 205.0, 215.0, 225.0, 235.0, 245.0, 255.0, 265.0, 275.0, 285.0, 295.0, 305.0, 315.0, 325.0, 335.0, 345.0, 355.0, 365.0, 375.0, 385.0, 395.0, 405.0, 415.0, 425.0]
+2024-09-09 22:25:09.764 | INFO     | __main__:optimize_supply_chain:105 - Step completed: demand_forecaster
+2024-09-09 22:25:09.764 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'demand_forecaster': {'date': '2024-09-09', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 175.0, 185.0, 195.0, 205.0, 215.0, 225.0, 235.0, 245.0, 255.0, 265.0, 275.0, 285.0, 295.0, 305.0, 315.0, 325.0, 335.0, 345.0, 355.0, 365.0, 375.0, 385.0, 395.0, 405.0, 415.0, 425.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n    "reorder_point": 130.0,\n    "economic_order_quantity": 120.0\n}' response_metadata={'token_usage': {'completion_tokens': 25, 'prompt_tokens': 120, 'total_tokens': 145, 'completion_time': 0.020833333, 'prompt_time': 0.014439972, 'queue_time': 0.001956984, 'total_time': 0.035273305}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_873a560973', 'finish_reason': 'stop', 'logprobs': None} id='run-a60c3866-150a-4c7b-93de-ea2e79498afa-0' usage_metadata={'input_tokens': 120, 'output_tokens': 25, 'total_tokens': 145}
+2024-09-09 22:25:09.944 | INFO     | backend.agent.inventory_optimizer:inventory_optimizer_node:42 - Inventory optimization results: Reorder Point = 130.0, EOQ = 120.0
+2024-09-09 22:25:09.947 | INFO     | __main__:optimize_supply_chain:105 - Step completed: inventory_optimizer
+2024-09-09 22:25:09.948 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'inventory_optimizer': {'date': '2024-09-09', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 175.0, 185.0, 195.0, 205.0, 215.0, 225.0, 235.0, 245.0, 255.0, 265.0, 275.0, 285.0, 295.0, 305.0, 315.0, 325.0, 335.0, 345.0, 355.0, 365.0, 375.0, 385.0, 395.0, 405.0, 415.0, 425.0], 'reorder_point': 130.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{"supplier_risk": 0.15}' response_metadata={'token_usage': {'completion_tokens': 11, 'prompt_tokens': 79, 'total_tokens': 90, 'completion_time': 0.009166667, 'prompt_time': 0.009857144, 'queue_time': 0.004189082, 'total_time': 0.019023811}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_6a6771ae9c', 'finish_reason': 'stop', 'logprobs': None} id='run-20e0e38a-c433-448f-a3b8-0f12641bd4ac-0' usage_metadata={'input_tokens': 79, 'output_tokens': 11, 'total_tokens': 90}
+2024-09-09 22:25:10.107 | INFO     | backend.agent.supplier_risk_analyzer:supplier_risk_analyzer_node:28 - Supplier risk analyzed: 0.15
+2024-09-09 22:25:10.110 | INFO     | __main__:optimize_supply_chain:105 - Step completed: supplier_risk_analyzer
+2024-09-09 22:25:10.111 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'supplier_risk_analyzer': {'date': '2024-09-09', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 175.0, 185.0, 195.0, 205.0, 215.0, 225.0, 235.0, 245.0, 255.0, 265.0, 275.0, 285.0, 295.0, 305.0, 315.0, 325.0, 335.0, 345.0, 355.0, 365.0, 375.0, 385.0, 395.0, 405.0, 415.0, 425.0], 'reorder_point': 130.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.15, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"recommendations": [\n"Reorder now to avoid stockout risk",\n"Order 120 units to stay below reorder point and minimize inventory costs",\n"Consider negotiating better supplier terms to reduce risk and costs"\n]\n}' response_metadata={'token_usage': {'completion_tokens': 46, 'prompt_tokens': 259, 'total_tokens': 305, 'completion_time': 0.038333333, 'prompt_time': 0.03154616, 'queue_time': 0.0014751700000000048, 'total_time': 0.069879493}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_a97cfe35ae', 'finish_reason': 'stop', 'logprobs': None} id='run-a28b9339-4e7f-4078-bf3d-f2ed100f0ca2-0' usage_metadata={'input_tokens': 259, 'output_tokens': 46, 'total_tokens': 305}
+2024-09-09 22:25:10.326 | INFO     | backend.agent.recommendation_generator:recommendation_generator_node:41 - Recommendations generated: ['Reorder now to avoid stockout risk', 'Order 120 units to stay below reorder point and minimize inventory costs', 'Consider negotiating better supplier terms to reduce risk and costs']
+2024-09-09 22:25:10.327 | INFO     | __main__:optimize_supply_chain:105 - Step completed: recommendation_generator
+2024-09-09 22:25:10.328 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'recommendation_generator': {'date': '2024-09-09', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 175.0, 185.0, 195.0, 205.0, 215.0, 225.0, 235.0, 245.0, 255.0, 265.0, 275.0, 285.0, 295.0, 305.0, 315.0, 325.0, 335.0, 345.0, 355.0, 365.0, 375.0, 385.0, 395.0, 405.0, 415.0, 425.0], 'reorder_point': 130.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.15, 'recommendations': ['Reorder now to avoid stockout risk', 'Order 120 units to stay below reorder point and minimize inventory costs', 'Consider negotiating better supplier terms to reduce risk and costs']}}
+2024-09-09 22:25:10.329 | INFO     | __main__:optimize_supply_chain:110 - Final state after workflow: {'date': '2024-09-09', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 175.0, 185.0, 195.0, 205.0, 215.0, 225.0, 235.0, 245.0, 255.0, 265.0, 275.0, 285.0, 295.0, 305.0, 315.0, 325.0, 335.0, 345.0, 355.0, 365.0, 375.0, 385.0, 395.0, 405.0, 415.0, 425.0], 'reorder_point': 130.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.15, 'recommendations': ['Reorder now to avoid stockout risk', 'Order 120 units to stay below reorder point and minimize inventory costs', 'Consider negotiating better supplier terms to reduce risk and costs']}
+2024-09-09 22:25:10.330 | ERROR    | __main__:optimize_supply_chain:124 - Error in optimization: 27 validation errors for OptimizationResult
+forecast.0
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=0, demand=165.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.1
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=1, demand=175.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.2
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=2, demand=185.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.3
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=3, demand=195.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.4
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=4, demand=205.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.5
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=5, demand=215.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.6
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=6, demand=225.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.7
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=7, demand=235.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.8
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=8, demand=245.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.9
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=9, demand=255.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.10
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=10, demand=265.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.11
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=11, demand=275.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.12
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=12, demand=285.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.13
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=13, demand=295.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.14
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=14, demand=305.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.15
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=15, demand=315.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.16
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=16, demand=325.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.17
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=17, demand=335.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.18
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=18, demand=345.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.19
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=19, demand=355.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.20
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=20, demand=365.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.21
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=21, demand=375.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.22
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=22, demand=385.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.23
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=23, demand=395.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.24
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=24, demand=405.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.25
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=25, demand=415.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.26
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=26, demand=425.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+INFO:     127.0.0.1:2974 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"forecast": [\n150.0,\n165.0,\n180.0,\n195.0,\n210.0,\n225.0,\n240.0,\n255.0,\n270.0,\n285.0,\n300.0,\n315.0,\n330.0,\n345.0,\n360.0,\n375.0,\n390.0,\n405.0,\n420.0,\n435.0,\n450.0,\n465.0,\n480.0,\n495.0,\n510.0,\n525.0,\n540.0\n]\n}' response_metadata={'token_usage': {'completion_tokens': 116, 'prompt_tokens': 109, 'total_tokens': 225, 'completion_time': 0.096666667, 'prompt_time': 0.013564225, 'queue_time': 0.0015736720000000017, 'total_time': 0.110230892}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_6a6771ae9c', 'finish_reason': 'stop', 'logprobs': None} id='run-ca300767-ddf0-48f2-bd97-d91558ee5492-0' usage_metadata={'input_tokens': 109, 'output_tokens': 116, 'total_tokens': 225}
+2024-09-09 22:25:34.972 | INFO     | backend.agent.demand_forecaster:demand_forecaster_node:25 - Forecast generated: [150.0, 165.0, 180.0, 195.0, 210.0, 225.0, 240.0, 255.0, 270.0, 285.0, 300.0, 315.0, 330.0, 345.0, 360.0, 375.0, 390.0, 405.0, 420.0, 435.0, 450.0, 465.0, 480.0, 495.0, 510.0, 525.0, 540.0]
+2024-09-09 22:25:34.972 | INFO     | __main__:optimize_supply_chain:105 - Step completed: demand_forecaster
+2024-09-09 22:25:34.972 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'demand_forecaster': {'date': '2024-09-08', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [150.0, 165.0, 180.0, 195.0, 210.0, 225.0, 240.0, 255.0, 270.0, 285.0, 300.0, 315.0, 330.0, 345.0, 360.0, 375.0, 390.0, 405.0, 420.0, 435.0, 450.0, 465.0, 480.0, 495.0, 510.0, 525.0, 540.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n    "reorder_point": 140.0,\n    "economic_order_quantity": 100.0\n}' response_metadata={'token_usage': {'completion_tokens': 25, 'prompt_tokens': 120, 'total_tokens': 145, 'completion_time': 0.020833333, 'prompt_time': 0.014283098, 'queue_time': 0.001877690999999999, 'total_time': 0.035116431}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_a97cfe35ae', 'finish_reason': 'stop', 'logprobs': None} id='run-e2c7d379-e788-48d1-bd05-8d6aa979d39c-0' usage_metadata={'input_tokens': 120, 'output_tokens': 25, 'total_tokens': 145}
+2024-09-09 22:25:35.145 | INFO     | backend.agent.inventory_optimizer:inventory_optimizer_node:42 - Inventory optimization results: Reorder Point = 140.0, EOQ = 100.0
+2024-09-09 22:25:35.147 | INFO     | __main__:optimize_supply_chain:105 - Step completed: inventory_optimizer
+2024-09-09 22:25:35.148 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'inventory_optimizer': {'date': '2024-09-08', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [150.0, 165.0, 180.0, 195.0, 210.0, 225.0, 240.0, 255.0, 270.0, 285.0, 300.0, 315.0, 330.0, 345.0, 360.0, 375.0, 390.0, 405.0, 420.0, 435.0, 450.0, 465.0, 480.0, 495.0, 510.0, 525.0, 540.0], 'reorder_point': 140.0, 'economic_order_quantity': 100.0, 'supplier_risk': 0.0, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{"supplier_risk": 0.6}' response_metadata={'token_usage': {'completion_tokens': 11, 'prompt_tokens': 79, 'total_tokens': 90, 'completion_time': 0.009166667, 'prompt_time': 0.009097615, 'queue_time': 0.014314345, 'total_time': 0.018264282}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_af05557ca2', 'finish_reason': 'stop', 'logprobs': None} id='run-707a0408-3c4b-4c9c-99d3-cfe7560da8ea-0' usage_metadata={'input_tokens': 79, 'output_tokens': 11, 'total_tokens': 90}
+2024-09-09 22:25:35.319 | INFO     | backend.agent.supplier_risk_analyzer:supplier_risk_analyzer_node:28 - Supplier risk analyzed: 0.6
+2024-09-09 22:25:35.321 | INFO     | __main__:optimize_supply_chain:105 - Step completed: supplier_risk_analyzer
+2024-09-09 22:25:35.322 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'supplier_risk_analyzer': {'date': '2024-09-08', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [150.0, 165.0, 180.0, 195.0, 210.0, 225.0, 240.0, 255.0, 270.0, 285.0, 300.0, 315.0, 330.0, 345.0, 360.0, 375.0, 390.0, 405.0, 420.0, 435.0, 450.0, 465.0, 480.0, 495.0, 510.0, 525.0, 540.0], 'reorder_point': 140.0, 'economic_order_quantity': 100.0, 'supplier_risk': 0.6, 'recommendations': []}}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"recommendations": [\n"Reorder now to avoid stockout risk",\n"Current inventory (50.0) is below the reorder point (140.0), indicating a high risk of stockout",\n"Consider increasing the order quantity to take advantage of economies of scale",\n"Supplier risk is moderate (0.6), consider diversifying suppliers or negotiating better terms",\n"Current inventory level (50.0) is below the economic order quantity (100.0), consider placing a larger order to utilize optimal inventory levels"\n]' response_metadata={'token_usage': {'completion_tokens': 108, 'prompt_tokens': 259, 'total_tokens': 367, 'completion_time': 0.09, 'prompt_time': 0.04096832, 'queue_time': 0.0014375459999999979, 'total_time': 0.13096832}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_6a6771ae9c', 'finish_reason': 'stop', 'logprobs': None} id='run-31275e52-752f-4208-909a-bc0540aab8b2-0' usage_metadata={'input_tokens': 259, 'output_tokens': 108, 'total_tokens': 367}
+ERROR:backend.agent.llm_service:Error in generate_response: No valid JSON object found in the response
+2024-09-09 22:25:35.597 | WARNING  | backend.agent.recommendation_generator:recommendation_generator_node:31 - First attempt failed. Retrying with explicit JSON instruction.
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n    "recommendations": [\n        "Reorder: Yes, current inventory is below reorder point",\n        "Order quantity: 100.0, to maintain optimal inventory level",\n        "Supplier risk level: 0.6, consider diversifying suppliers for mitigation"\n    ]\n}' response_metadata={'token_usage': {'completion_tokens': 59, 'prompt_tokens': 275, 'total_tokens': 334, 'completion_time': 0.049166667, 'prompt_time': 0.034252502, 'queue_time': 0.0017778050000000004, 'total_time': 0.083419169}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_6a6771ae9c', 'finish_reason': 'stop', 'logprobs': None} id='run-f1f8707b-b961-4632-bbab-6b551258c12e-0' usage_metadata={'input_tokens': 275, 'output_tokens': 59, 'total_tokens': 334}
+2024-09-09 22:25:35.798 | INFO     | backend.agent.recommendation_generator:recommendation_generator_node:41 - Recommendations generated: ['Reorder: Yes, current inventory is below reorder point', 'Order quantity: 100.0, to maintain optimal inventory level', 'Supplier risk level: 0.6, consider diversifying suppliers for mitigation']
+2024-09-09 22:25:35.800 | INFO     | __main__:optimize_supply_chain:105 - Step completed: recommendation_generator
+2024-09-09 22:25:35.800 | INFO     | __main__:optimize_supply_chain:106 - Current state: {'recommendation_generator': {'date': '2024-09-08', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [150.0, 165.0, 180.0, 195.0, 210.0, 225.0, 240.0, 255.0, 270.0, 285.0, 300.0, 315.0, 330.0, 345.0, 360.0, 375.0, 390.0, 405.0, 420.0, 435.0, 450.0, 465.0, 480.0, 495.0, 510.0, 525.0, 540.0], 'reorder_point': 140.0, 'economic_order_quantity': 100.0, 'supplier_risk': 0.6, 'recommendations': ['Reorder: Yes, current inventory is below reorder point', 'Order quantity: 100.0, to maintain optimal inventory level', 'Supplier risk level: 0.6, consider diversifying suppliers for mitigation']}}
+2024-09-09 22:25:35.802 | INFO     | __main__:optimize_supply_chain:110 - Final state after workflow: {'date': '2024-09-08', 'product_id': 5, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [150.0, 165.0, 180.0, 195.0, 210.0, 225.0, 240.0, 255.0, 270.0, 285.0, 300.0, 315.0, 330.0, 345.0, 360.0, 375.0, 390.0, 405.0, 420.0, 435.0, 450.0, 465.0, 480.0, 495.0, 510.0, 525.0, 540.0], 'reorder_point': 140.0, 'economic_order_quantity': 100.0, 'supplier_risk': 0.6, 'recommendations': ['Reorder: Yes, current inventory is below reorder point', 'Order quantity: 100.0, to maintain optimal inventory level', 'Supplier risk level: 0.6, consider diversifying suppliers for mitigation']}
+2024-09-09 22:25:35.802 | ERROR    | __main__:optimize_supply_chain:124 - Error in optimization: 27 validation errors for OptimizationResult
+forecast.0
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=0, demand=150.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.1
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=1, demand=165.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.2
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=2, demand=180.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.3
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=3, demand=195.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.4
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=4, demand=210.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.5
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=5, demand=225.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.6
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=6, demand=240.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.7
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=7, demand=255.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.8
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=8, demand=270.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.9
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=9, demand=285.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.10
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=10, demand=300.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.11
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=11, demand=315.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.12
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=12, demand=330.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.13
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=13, demand=345.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.14
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=14, demand=360.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.15
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=15, demand=375.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.16
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=16, demand=390.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.17
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=17, demand=405.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.18
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=18, demand=420.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.19
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=19, demand=435.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.20
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=20, demand=450.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.21
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=21, demand=465.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.22
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=22, demand=480.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.23
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=23, demand=495.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.24
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=24, demand=510.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.25
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=25, demand=525.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+forecast.26
+  Input should be a valid number [type=float_type, input_value=ForecastItem(date=26, demand=540.0), input_type=ForecastItem]
+    For further information visit https://errors.pydantic.dev/2.9/v/float_type
+INFO:     127.0.0.1:2985 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [26660]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [29120]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{"forecast": [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0, 472.0]}' response_metadata={'token_usage': {'completion_tokens': 139, 'prompt_tokens': 109, 'total_tokens': 248, 'completion_time': 0.115833333, 'prompt_time': 0.031763914, 'queue_time': 0.387161411, 'total_time': 0.147597247}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_a97cfe35ae', 'finish_reason': 'stop', 'logprobs': None} id='run-6d709b48-9a95-4555-8156-180a68bc0c13-0' usage_metadata={'input_tokens': 109, 'output_tokens': 139, 'total_tokens': 248}
+2024-09-09 22:32:20.920 | INFO     | backend.agent.demand_forecaster:demand_forecaster_node:25 - Forecast generated: [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0, 472.0]
+2024-09-09 22:32:20.921 | INFO     | __main__:optimize_supply_chain:109 - Step completed: demand_forecaster
+2024-09-09 22:32:20.922 | INFO     | __main__:optimize_supply_chain:110 - Current state: {'demand_forecaster': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0, 472.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}}
+2024-09-09 22:32:20.922 | INFO     | __main__:optimize_supply_chain:114 - Final state after workflow: {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0, 472.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n  "reorder_point": 60.0,\n  "economic_order_quantity": 120.0\n}' response_metadata={'token_usage': {'completion_tokens': 25, 'prompt_tokens': 120, 'total_tokens': 145, 'completion_time': 0.020833333, 'prompt_time': 0.022835917, 'queue_time': 0.520625906, 'total_time': 0.04366925}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_a97cfe35ae', 'finish_reason': 'stop', 'logprobs': None} id='run-8074a3de-75eb-4948-ac82-84b0e6d5f8f9-0' usage_metadata={'input_tokens': 120, 'output_tokens': 25, 'total_tokens': 145}
+2024-09-09 22:32:21.622 | INFO     | backend.agent.inventory_optimizer:inventory_optimizer_node:42 - Inventory optimization results: Reorder Point = 60.0, EOQ = 120.0
+2024-09-09 22:32:21.623 | INFO     | __main__:optimize_supply_chain:109 - Step completed: inventory_optimizer
+2024-09-09 22:32:21.624 | INFO     | __main__:optimize_supply_chain:110 - Current state: {'inventory_optimizer': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0, 472.0], 'reorder_point': 60.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.0, 'recommendations': []}}
+2024-09-09 22:32:21.624 | INFO     | __main__:optimize_supply_chain:114 - Final state after workflow: {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0, 472.0], 'reorder_point': 60.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.0, 'recommendations': []}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{"supplier_risk": 0.35}' response_metadata={'token_usage': {'completion_tokens': 11, 'prompt_tokens': 79, 'total_tokens': 90, 'completion_time': 0.009166667, 'prompt_time': 0.014719662, 'queue_time': 0.001955936, 'total_time': 0.023886329}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_873a560973', 'finish_reason': 'stop', 'logprobs': None} id='run-4adf9e0a-0323-4b9b-9cc7-72be92f6eb83-0' usage_metadata={'input_tokens': 79, 'output_tokens': 11, 'total_tokens': 90}
+2024-09-09 22:32:21.792 | INFO     | backend.agent.supplier_risk_analyzer:supplier_risk_analyzer_node:28 - Supplier risk analyzed: 0.35
+2024-09-09 22:32:21.793 | INFO     | __main__:optimize_supply_chain:109 - Step completed: supplier_risk_analyzer
+2024-09-09 22:32:21.793 | INFO     | __main__:optimize_supply_chain:110 - Current state: {'supplier_risk_analyzer': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0, 472.0], 'reorder_point': 60.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.35, 'recommendations': []}}
+2024-09-09 22:32:21.794 | INFO     | __main__:optimize_supply_chain:114 - Final state after workflow: {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [160.0, 172.0, 184.0, 196.0, 208.0, 220.0, 232.0, 244.0, 256.0, 268.0, 280.0, 292.0, 304.0, 316.0, 328.0, 340.0, 352.0, 364.0, 376.0, 388.0, 400.0, 412.0, 424.0, 436.0, 448.0, 460.0, 472.0], 'reorder_point': 60.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.35, 'recommendations': []}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"recommendations": [\n"Consider reordering 20 units to maintain optimal inventory levels",\n"Monitor supplier risk and adjust inventory accordingly",\n"Adjust reorder point to 70.0 to account for supplier risk"\n]' response_metadata={'token_usage': {'completion_tokens': 45, 'prompt_tokens': 259, 'total_tokens': 304, 'completion_time': 0.0375, 'prompt_time': 0.031670046, 'queue_time': 0.426017202, 'total_time': 0.069170046}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_a97cfe35ae', 'finish_reason': 'stop', 'logprobs': None} id='run-23203506-b1e4-4e4c-b4a5-ad1c8beafa3a-0' usage_metadata={'input_tokens': 259, 'output_tokens': 45, 'total_tokens': 304}
+ERROR:backend.agent.llm_service:Error in generate_response: No valid JSON object found in the response
+2024-09-09 22:32:22.422 | WARNING  | backend.agent.recommendation_generator:recommendation_generator_node:31 - First attempt failed. Retrying with explicit JSON instruction.
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"recommendations": [\n"Reorder now, as current inventory (50.0) is below the reorder point (60.0).",\n"Consider increasing the order quantity, as it\'s below the economic order quantity (120.0).",\n"Supplier risk is moderate (0.35), consider diversifying supply chain or negotiating better terms."' response_metadata={'token_usage': {'completion_tokens': 72, 'prompt_tokens': 275, 'total_tokens': 347, 'completion_time': 0.06, 'prompt_time': 0.036813753, 'queue_time': 0.0018346660000000056, 'total_time': 0.096813753}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_179b0f92c9', 'finish_reason': 'stop', 'logprobs': None} id='run-f5a9c6e3-a298-4a48-afdd-90d767381432-0' usage_metadata={'input_tokens': 275, 'output_tokens': 72, 'total_tokens': 347}
+ERROR:backend.agent.llm_service:Error in generate_response: No valid JSON object found in the response
+2024-09-09 22:32:22.640 | ERROR    | __main__:optimize_supply_chain:133 - Error in optimization: No valid JSON object found in the response
+INFO:     127.0.0.1:3416 - "POST /optimize_supply_chain HTTP/1.1" 500 Internal Server Error
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [29120]
+
+(How_I_Built_Supply_Chain_Optimization_Using_AI_Agent) C:\Users\worka\PycharmProjects\How_I_Built_Supply_Chain_Optimization_Using_AI_Agents>python -m backend.main
+INFO:     Started server process [20712]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{"forecast": [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0]}' response_metadata={'token_usage': {'completion_tokens': 139, 'prompt_tokens': 109, 'total_tokens': 248, 'completion_time': 0.115833333, 'prompt_time': 0.013258953, 'queue_time': 0.0017586470000000003, 'total_time': 0.129092286}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_873a560973', 'finish_reason': 'stop', 'logprobs': None} id='run-c3bc41ed-da56-4b21-b0c5-59147c7e98c1-0' usage_metadata={'input_tokens': 109, 'output_tokens': 139, 'total_tokens': 248}
+2024-09-09 22:34:38.303 | INFO     | backend.agent.demand_forecaster:demand_forecaster_node:25 - Forecast generated: [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0]
+2024-09-09 22:34:38.304 | INFO     | __main__:optimize_supply_chain:109 - Step completed: demand_forecaster
+2024-09-09 22:34:38.304 | INFO     | __main__:optimize_supply_chain:110 - Current state: {'demand_forecaster': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}}
+2024-09-09 22:34:38.305 | INFO     | __main__:optimize_supply_chain:114 - Final state after workflow: {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0], 'reorder_point': 0.0, 'economic_order_quantity': 0.0, 'supplier_risk': 0.0, 'recommendations': []}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n    "reorder_point": 140.0,\n    "economic_order_quantity": 120.0\n}' response_metadata={'token_usage': {'completion_tokens': 25, 'prompt_tokens': 120, 'total_tokens': 145, 'completion_time': 0.020833333, 'prompt_time': 0.047559016, 'queue_time': 0.029327814, 'total_time': 0.068392349}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_873a560973', 'finish_reason': 'stop', 'logprobs': None} id='run-255ff01c-0fe1-4682-9091-466ba72baba9-0' usage_metadata={'input_tokens': 120, 'output_tokens': 25, 'total_tokens': 145}
+2024-09-09 22:34:38.543 | INFO     | backend.agent.inventory_optimizer:inventory_optimizer_node:42 - Inventory optimization results: Reorder Point = 140.0, EOQ = 120.0
+2024-09-09 22:34:38.546 | INFO     | __main__:optimize_supply_chain:109 - Step completed: inventory_optimizer
+2024-09-09 22:34:38.547 | INFO     | __main__:optimize_supply_chain:110 - Current state: {'inventory_optimizer': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0], 'reorder_point': 140.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.0, 'recommendations': []}}
+2024-09-09 22:34:38.548 | INFO     | __main__:optimize_supply_chain:114 - Final state after workflow: {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0], 'reorder_point': 140.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.0, 'recommendations': []}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{"supplier_risk": 0.15}' response_metadata={'token_usage': {'completion_tokens': 11, 'prompt_tokens': 79, 'total_tokens': 90, 'completion_time': 0.009166667, 'prompt_time': 0.008872651, 'queue_time': 0.013512348999999998, 'total_time': 0.018039318}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_af05557ca2', 'finish_reason': 'stop', 'logprobs': None} id='run-6d450674-fca0-4dfc-a34d-5790c93a2d58-0' usage_metadata={'input_tokens': 79, 'output_tokens': 11, 'total_tokens': 90}
+2024-09-09 22:34:38.741 | INFO     | backend.agent.supplier_risk_analyzer:supplier_risk_analyzer_node:28 - Supplier risk analyzed: 0.15
+2024-09-09 22:34:38.744 | INFO     | __main__:optimize_supply_chain:109 - Step completed: supplier_risk_analyzer
+2024-09-09 22:34:38.745 | INFO     | __main__:optimize_supply_chain:110 - Current state: {'supplier_risk_analyzer': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0], 'reorder_point': 140.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.15, 'recommendations': []}}
+2024-09-09 22:34:38.746 | INFO     | __main__:optimize_supply_chain:114 - Final state after workflow: {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0], 'reorder_point': 140.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.15, 'recommendations': []}
+INFO:httpx:HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:backend.agent.llm_service:Raw response from LLM: content='{\n"recommendations": ["Reorder now to avoid stockouts, as current inventory (50.0) is below the reorder point (140.0).",\n"Consider increasing the economic order quantity (EOQ) to reduce the number of reorders and associated costs.",\n"Negotiate with the supplier to reduce the risk of stockouts and improve supply chain reliability."]\n}' response_metadata={'token_usage': {'completion_tokens': 77, 'prompt_tokens': 259, 'total_tokens': 336, 'completion_time': 0.064166667, 'prompt_time': 0.034602688, 'queue_time': 0.0019182010000000013, 'total_time': 0.098769355}, 'model_name': 'Llama3-8b-8192', 'system_fingerprint': 'fp_179b0f92c9', 'finish_reason': 'stop', 'logprobs': None} id='run-1ce75ab7-3998-4031-bf1e-8af1bd919b20-0' usage_metadata={'input_tokens': 259, 'output_tokens': 77, 'total_tokens': 336}
+2024-09-09 22:34:38.988 | INFO     | backend.agent.recommendation_generator:recommendation_generator_node:41 - Recommendations generated: ['Reorder now to avoid stockouts, as current inventory (50.0) is below the reorder point (140.0).', 'Consider increasing the economic order quantity (EOQ) to reduce the number of reorders and associated costs.', 'Negotiate with the supplier to reduce the risk of stockouts and improve supply chain reliability.']
+2024-09-09 22:34:38.989 | INFO     | __main__:optimize_supply_chain:109 - Step completed: recommendation_generator
+2024-09-09 22:34:38.990 | INFO     | __main__:optimize_supply_chain:110 - Current state: {'recommendation_generator': {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0], 'reorder_point': 140.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.15, 'recommendations': ['Reorder now to avoid stockouts, as current inventory (50.0) is below the reorder point (140.0).', 'Consider increasing the economic order quantity (EOQ) to reduce the number of reorders and associated costs.', 'Negotiate with the supplier to reduce the risk of stockouts and improve supply chain reliability.']}}
+2024-09-09 22:34:38.990 | INFO     | __main__:optimize_supply_chain:114 - Final state after workflow: {'date': '2024-09-09', 'product_id': 1, 'historical_demand': [100.0, 120.0, 140.0, 160.0, 180.0], 'current_inventory': 50.0, 'supplier_reliability': 0.85, 'forecast': [165.0, 170.0, 175.0, 180.0, 185.0, 190.0, 195.0, 200.0, 205.0, 210.0, 215.0, 220.0, 225.0, 230.0, 235.0, 240.0, 245.0, 250.0, 255.0, 260.0, 265.0, 270.0, 275.0, 280.0, 285.0, 290.0, 295.0], 'reorder_point': 140.0, 'economic_order_quantity': 120.0, 'supplier_risk': 0.15, 'recommendations': ['Reorder now to avoid stockouts, as current inventory (50.0) is below the reorder point (140.0).', 'Consider increasing the economic order quantity (EOQ) to reduce the number of reorders and associated costs.', 'Negotiate with the supplier to reduce the risk of stockouts and improve supply chain reliability.']}
+INFO:     127.0.0.1:3464 - "POST /optimize_supply_chain HTTP/1.1" 200 OK
