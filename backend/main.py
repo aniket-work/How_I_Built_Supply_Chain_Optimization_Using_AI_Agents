@@ -19,9 +19,20 @@ load_dotenv()
 app = FastAPI()
 
 
+from pydantic import BaseModel
+from typing import List
+
 class ForecastItem(BaseModel):
     date: int
     demand: float
+
+class OptimizationResult(BaseModel):
+    forecast: List[ForecastItem]
+    reorder_point: float
+    economic_order_quantity: float
+    supplier_risk: float
+    recommendations: List[str]
+    current_inventory: float
 
 class SupplyChainData(BaseModel):
     date: str
@@ -30,13 +41,6 @@ class SupplyChainData(BaseModel):
     current_inventory: float
     supplier_reliability: float
 
-class OptimizationResult(BaseModel):
-    forecast: list[float]
-    reorder_point: float
-    economic_order_quantity: float
-    supplier_risk: float
-    recommendations: list[str]
-    current_inventory: float
 
 class SupplyChainResponse(BaseModel):
     forecast: List[ForecastItem]
@@ -105,13 +109,18 @@ async def optimize_supply_chain(data: SupplyChainData):
             logger.info(f"Step completed: {list(s.keys())[0]}")
             logger.info(f"Current state: {s}")
 
-        # Extract the final state after the workflow finishes
-        final_state = s[list(s.keys())[0]]  # Get the value of the last key
-        logger.info(f"Final state after workflow: {final_state}")
+            # Extract the final state after the workflow finishes
+            final_state = s[list(s.keys())[0]]
+            logger.info(f"Final state after workflow: {final_state}")
 
-        # Ensure that the final state has the required fields before returning
+            # Convert forecast to list of ForecastItem
+            forecast_items = [
+                ForecastItem(date=i, demand=d)
+                for i, d in enumerate(final_state.get('forecast', []))
+            ]
+
         result = OptimizationResult(
-            forecast=[ForecastItem(date=i, demand=d) for i, d in enumerate(final_state.get('forecast', []))],
+            forecast=forecast_items,
             reorder_point=final_state.get('reorder_point', 0.0),
             economic_order_quantity=final_state.get('economic_order_quantity', 0.0),
             supplier_risk=final_state.get('supplier_risk', 0.0),
